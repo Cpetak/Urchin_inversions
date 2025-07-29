@@ -11,5 +11,5 @@ Steps and code for:
 - Grouping individuals based on karyotype
 - Looking for correlation with latitude
 
-can be found in this markdown.
+can be found in [this markdown.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_1.md)
 
