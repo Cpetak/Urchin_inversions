@@ -1,74 +1,69 @@
+#Import packages
+
 from collections import Counter
 import matplotlib.pyplot as plt
 from collections import defaultdict
 import numpy as np
-print("before pandas")
 import pandas as pd
 import argparse
+from scipy import stats
 from scipy.stats import chisquare
 
 from sklearn.cluster import KMeans
 from sklearn.cluster import AgglomerativeClustering
 from mpl_toolkits.basemap import Basemap as Basemap
 
-from scipy import stats
 
+#K-means clustering
 def get_KMeans(values, k):
-    # Convert the list to a numpy array
     X = np.array(values).reshape(-1, 1)
 
     # Perform K-means clustering
     kmeans = KMeans(n_clusters=k,n_init="auto",random_state=42)
     kmeans.fit(X)
 
-    # Get the cluster labels
     cluster_labels = kmeans.labels_
-
-    # Initialize lists for each cluster
     clusters = [[] for _ in range(k)]
-
-    # Assign each value to its corresponding cluster
     for value, label in zip(values, cluster_labels):
         clusters[label].append(value)
 
     return sorted(clusters, key=lambda x: x[0])
 
+#Agglomerative clustering
 def get_agglo(values, k):
   X = np.array(values).reshape(-1, 1)
 
   agg_clustering = AgglomerativeClustering(n_clusters=k, linkage='ward')
-
-  # Fit the model to the data
   agg_clustering.fit(X)
 
   labels = agg_clustering.labels_
 
   return labels
 
+#Agglomerative clustering, 2D
 def get_agglo_2d(x,y,k):
   X = np.array(x).reshape(-1, 1)
   Y = np.array(y).reshape(-1, 1)
 
   agg_clustering = AgglomerativeClustering(n_clusters=k, linkage='ward')
-
-  # Fit the model to the data
   agg_clustering.fit(np.concatenate((X, Y), axis=1))
 
   labels = agg_clustering.labels_
 
   return labels
 
+#Elbow plot
 def find_elbow(x,y,dt):
   X = np.array(x).reshape(-1, 1)
   Y = np.array(y).reshape(-1, 1)
 
   agg_clustering = AgglomerativeClustering(n_clusters=None, linkage='ward',distance_threshold=dt)
-
-  # Fit the model to the data
   agg_clustering.fit(np.concatenate((X, Y), axis=1))
 
   return agg_clustering.n_clusters_
 
+
+#Initialize variables
 parser = argparse.ArgumentParser(description="Description of your script")
 parser.add_argument("df1", type=str, help="PC1 csv")
 parser.add_argument("df2", type=str, help="PC2 csv")
@@ -82,12 +77,10 @@ df2=pd.read_csv(args.df2)
 dim1=df1["dim1"].tolist()
 dim2=df2["dim2"].tolist()
 
-print(len(dim1))
-print(len(dim2))
-
 pe=pd.read_csv(args.perc_explained,names=["pes"])
 pes_list=pe.pes.to_list()
 
+#Population labels
 dim=np.array(list(zip(dim1,dim2)))
 pops=["BOD", "CAP", "FOG", "KIB", "LOM", "SAN", "TER"]
 tpop=[]
@@ -100,11 +93,12 @@ for p in pops:
     if p == "FOG":
       tpop.append([p] * 18)
 
-pops=np.array([x for xs in tpop for x in xs]) #np.array([item for item in pops for _ in range(20)])
+pops=np.array([x for xs in tpop for x in xs])
 ind_id=np.array(list(range(1,len(pops)+1)))
 
 NUM_CLUST=args.k
 
+#Make elbow plot, a.k.a. how many groups are there?
 f_clusts=[]
 for i in np.arange(0.05,1,0.01):
   f_clusts.append(find_elbow(dim1,dim2,i))
@@ -118,15 +112,17 @@ plt.ylabel("Number of clusters")
 plt.xlabel("The linkage distance threshold (above which clusters will not be merged)")
 plt.savefig(args.df1[:-9]+"_elbow.pdf")
 
+
+#Cluster individuals based on how many groups there are
 if NUM_CLUST == 3:
   clusts=get_agglo(dim1, NUM_CLUST)
 else:
   clusts=get_agglo_2d(dim1,dim2,NUM_CLUST)
 
+#Assign colors based on clustering
 #order of colors: homoq, homop, hetero
 all_cols=["C0","C1","C2",'red', 'blue', 'orange', 'cyan', 'magenta', 'brown', 'lime']
 p_colors= all_cols[:NUM_CLUST]
-#pca_colors = ["purple", "green","yellow"]
 
 f, axs = plt.subplots(figsize=(10, 10))
 
@@ -169,7 +165,7 @@ plt.yticks([])
 print("made first figure")
 plt.savefig(args.df1[:-9]+"_PCA.pdf")
 
-if NUM_CLUST == 3: #Old code to find "homozygote minor allele, heterozygote, homozygote major allele"
+if NUM_CLUST == 3: #code to find "homozygote minor allele, heterozygote, homozygote major allele"
   sorted_values = sorted(pop_dic.values(), key=lambda x: x[0]) #sort based on average value along PC1
   sorted_values2 = sorted(id_dic.values(), key=lambda x: x[0])
 
@@ -229,10 +225,11 @@ else:
 
 f, axs = plt.subplots(1, 7, sharey=True, figsize=(12, 3), subplot_kw=dict(aspect="equal"))
 
+
+#Correlation with latitude
 pops=["FOG","CAP","KIB","BOD","TER","LOM","SAN"]
 
 temp_nums=[]
-print(per_pops)
 for i,k in enumerate(per_pops.keys()):
   labels = []
   sizes = []
@@ -283,13 +280,7 @@ m = Basemap(
 
 m.drawcountries()
 m.drawcoastlines()
-#m.drawmapboundary(fill_color='#ADD8E6')  # Fill water with blue
-#m.fillcontinents(color='lightgray', lake_color='blue')  # Fill continents and lakes
-#m.drawparallels(range(int(llcrnrlat), int(urcrnrlat) + 1, 5), labels=[1, 0, 0, 0], fontsize=10)  # Latitude lines
-#m.drawmeridians(range(int(llcrnrlon), int(urcrnrlon) + 1, 5), labels=[0, 0, 0, 1], fontsize=10)  # Longitude lines
 
-
-#pops=["FOG","CAP","KIB","BOD","TER","LOM","SAN"]
 pop_coords=[(-124,44.8),(-124.5,42.8),(-123.8,39.6),(-123,38.3),(-122,36.9),(-120.6,34.7),(-117.25,32.6)]
 
 for i,k in enumerate(per_pops.keys()):
@@ -301,17 +292,9 @@ for i,k in enumerate(per_pops.keys()):
   # Plot
   plt.pie(sizes, center=(m(pop_coords[i][0],pop_coords[i][1])), colors=p_colors,radius=0.8,textprops={'fontsize': 8},startangle = -90,wedgeprops={"edgecolor":"k"})#,autopct='%1.0f%%')
 
-  #plt.title(pops[i])
 
 from matplotlib.patches import Patch
-#legend_elements = [Patch(facecolor=p_colors[0], edgecolor="black",
-                         #label='Homozygote 1'), Patch(facecolor=p_colors[1], edgecolor="black",
-                         #label='Homozygote 2'), Patch(facecolor=p_colors[2], edgecolor="black",
-                         #label='Heterozygote')]
-#plt.legend(handles=legend_elements, fontsize="12",loc='center',bbox_to_anchor=(0.85,0.85))
-#plt.legend(["Homozygote 1", "Homozygote 2", "Heterozygote"], loc="upper center")# ncol=4, bbox_to_anchor=(-3, -0.5, 0.5, 0.5))
 
-#plt.figure(figsize=(10,6))
 axis = plt.gca()
 axis.set_xlim([llcrnrlon, urcrnrlon])
 axis.set_ylim([llcrnrlat, urcrnrlat])
@@ -361,30 +344,16 @@ if NUM_CLUST == 3:
       file.write(str(ehete/len(hetero)) + "\n")
 
 
-#het_freqs = np.array([0.5, 0.47368421, 0.45, 0.7, 0.7, 0.6, 0.7])
-#homop_freqs = np.array([0.33333333, 0.47368421, 0.45, 0.15, 0.15, 0.35, 0.15])
 p_freq = het_freqs/[2] + homop_freqs
-#plt.plot(p_freq, label="p")
-#plt.plot(het_freqs, label="het")
-#plt.ylim(0.2, 0.8)
-#plt.legend()
 
-#slope, intercept, r_value, p_value, std_err = stats.linregress(list(range(len(het_freqs))), het_freqs)
 slope, intercept, r_value, p_value, std_err = stats.linregress(NS_coordinates, het_freqs)
 print("hetero correlation")
 print(slope, r_value, p_value)
-#slope, intercept, r_value, p_value, std_err = stats.linregress(list(range(len(homop_freqs))), homop_freqs)
+
 slope, intercept, r_value, p_value, std_err = stats.linregress(NS_coordinates, homop_freqs)
 print("homop correlation")
 print(slope, r_value, p_value)
-#slope, intercept, r_value, p_value, std_err = stats.linregress(list(range(len(homoq_freqs))), homoq_freqs)
+
 slope, intercept, r_value, p_value, std_err = stats.linregress(NS_coordinates, homoq_freqs)
 print("homoq correlation")
-print(slope, r_value, p_value)
-
-qs=homoq_freqs*2+het_freqs
-ps=homop_freqs*2+het_freqs
-print(qs)
-slope, intercept, r_value, p_value, std_err = stats.linregress(NS_coordinates,qs )
-print("qs correlation")
 print(slope, r_value, p_value)
