@@ -211,4 +211,114 @@ E.g., for NW_022145594.1, two spikes, (from 500 snp window data, all filtering):
 
 **Resulting breakpoint coordinates are summarized here: [breakpoints.txt](https://github.com/Cpetak/Urchin_inversions/blob/main/breakpoints.txt)**
 
+## Grouping individuals by genotype for specific inversion
+
+INPUT: Coordinates of region of interest, bcf file of chromosome
+
+Now that we have regions of interest (to recap: local pca -\> mds values
+-\> outlier region coordinates) we should first look at the PCA of the
+individuals based on that region. Yes, technically, this is what local
+PCA is doing already, but it is cleaner and safer to start fresh from
+the bcf files and do our own, independent PCA. The result should be the
+same or similar! it might not be exactly the same because the PCAs that
+are plotted as part of the local PCA pipe line only include outlier
+windows, whereas here we are going to take all SNPs in a specific region
+for the PCA analysis, and this might include windows that were not
+outliers in the local PCA analysis.
+
+For all of the steps below, conda activate wgs. (grn is for local PCA and LD only)
+
+### Step 1: Make a vcf file that only includes the region of interest for our chromosome.
+
+```bash
+chrom=$1
+mystart=$2
+myend=$3
+
+input_vcf="/users/c/p/cpetak/EG2023/structural_variation/filtered_bcf_files/${chrom}/${chrom}_filtered.vcf"
+
+grep -v \# $input_vcf | awk -v myvariable=$mystart '$2 >= myvariable' | awk -v myvariable=$myend '$2 <= myvariable' > temp.vcf
+
+outfilename=${1}_${2}_${3}.vcf
+cat vcf_header_noout temp.vcf > $outfilename
+
+rm temp.vcf
+```
+
+run: `bash subset_bcf.sh NW_022145594.1 12670717 16440127` where it is
+chromosome, start, end. Looks for a vcf file in the common data folder
+for that chromosome, output is also a vcf in the curr directory
+
+### Step 2: Convert vcf to gds
+
+```bash
+library(SeqArray)
+library(SNPRelate)
+
+seqParallelSetup(cluster=10, verbose=TRUE)
+
+args <- commandArgs(trailingOnly = TRUE)
+vcf_file <- args[1]
+out_file <- args[2]
+
+print(args)
+#print(paste(args[1],"sometime"))
+
+snpgdsVCF2GDS(vcf_file,paste(out_file,".gds",sep=""),verbose=T)
+```
+
+run:
+`Rscript vcf2gds.R NW_022145594.1_12670717_16440127.vcf NW_022145594.1_12670717_16440127`
+input filename, output file name (it will add .gds)
+
+### Step 3: Do PCA from the gds file
+
+```R
+library("SNPRelate")
+
+args <- commandArgs(trailingOnly = TRUE)
+filename <- args[1]
+genofile <- snpgdsOpen(filename)
+
+ccm_pca<-snpgdsPCA(genofile, autosome.only=FALSE)
+dim1<-ccm_pca$eigenvect[,1]
+dim2<-ccm_pca$eigenvect[,2]
+
+eigenval_list <- ccm_pca$eigenval
+eigenval_list[is.nan(eigenval_list)] <- 0
+esum <- sum(eigenval_list)
+e1 <- eigenval_list[1] / esum * 100
+e2 <- eigenval_list[2] / esum * 100
+
+my_df1 <- as.data.frame(dim1)
+my_df2 <- as.data.frame(dim2)
+
+special_character <- "\\."
+split_string <- strsplit(filename, special_character)[[1]]
+result1 <- paste(paste(head(split_string, -1), collapse = "."),"_dim1.csv",sep="")
+result2 <- paste(paste(head(split_string, -1), collapse= "."),"_dim2.csv",sep="")
+
+eresult <- paste(paste(head(split_string, -1), collapse= "."),"_perc_explained.csv",sep="")
+
+writeLines(c(as.character(e1), as.character(e2)), eresult)
+
+write.csv(my_df1, result1, row.names=FALSE)
+write.csv(my_df2, result2, row.names=FALSE)
+```
+
+run: `Rscript do_pca.R NW_022145594.1_12670717_16440127.gds` does PCA
+and writes PC1 and PC2 to csv files.
+
+### Step 4: Assign individuals to genotype groups, make plots, correlate with latitude
+
+Python file, [genotype_by_PCA.py](https://github.com/Cpetak/Urchin_inversions/blob/main/genotype_by_PCA.py)
+
+run:
+`python genotype_by_PCA.py NW_022145594.1_12702886_16793794_dim1.csv NW_022145594.1_12702886_16793794_dim2.csv 3 NW_022145594.1_12702886_16793794_perc_explained.csv`
+3 is number of clusters, output is 2 csv files with individual IDs
+(1-140) for each homozygote group and PCA, elbow, pie, line and map
+plots, and chi-square results to txt file.
+
+OUT: AA, Aa or aa for each individual and PCA plot, with map
+
 
