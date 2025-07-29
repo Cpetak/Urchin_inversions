@@ -2,5 +2,14 @@
 
 This is a cleaned git repo containing code needed to recreate our results.
 
-## Running local PCA
+## Part 1
+
+Steps and code for:
+
+- Finding putative inversions using local PCA
+- Identifying breakpoints
+- Grouping individuals based on karyotype
+- Looking for correlation with latitude
+
+can be found in this markdown.
 
