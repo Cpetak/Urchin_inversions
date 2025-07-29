@@ -345,6 +345,7 @@ if NUM_CLUST == 3:
 
 
 p_freq = het_freqs/[2] + homop_freqs
+print(homop_freqs/(homop_freqs+het_freqs+homoq_freqs))
 
 slope, intercept, r_value, p_value, std_err = stats.linregress(NS_coordinates, het_freqs)
 print("hetero correlation")
