@@ -323,7 +323,7 @@ OUT: AA, Aa or aa for each individual and PCA plot, with map
 
 **Resulting genotype frequencies are summarized here: [genotype_freqs.txt](https://github.com/Cpetak/Urchin_inversions/blob/main/genotype_freqs.txt)**
 
-**Resulting plots are in this directory: intermediary_files **
+**Resulting plots are in this directory: intermediary_files**
 
-**For changing/recreating figure 1: [Fig1.md](https://github.com/Cpetak/Urchin_inversions/blob/main/Fig1.md) **
+**For changing/recreating figure 1: [Fig1.md](https://github.com/Cpetak/Urchin_inversions/blob/main/Fig1.md)**
 
