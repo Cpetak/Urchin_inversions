@@ -11,7 +11,7 @@ Steps and code for:
 - Grouping individuals based on karyotype
 - Looking for correlation with latitude
 
-can be found in [this markdown.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_1.md)
+can be found in [Part 1.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_1.md)
 
 ## Part 2
 
@@ -21,13 +21,23 @@ Steps and code for:
 - Linkage disequilibrium calculation
 - Nucleotide diversity
 
-can be found in [this markdown.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_2.md)
+can be found in [Part 2.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_2.md)
 
+## Part 3
+
+Steps and code for:
+
+- Finding inversion markers
+- GO enrichment
+
+can be found in [Part 3.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_3.md)
 
 ## Other
 
 Other analyses that didn't make it into the paper: 
 
 - [Heterozygosity](https://github.com/Cpetak/Urchin_inversions/blob/main/Heterozygosity.md)
+
+- [Coverage](https://github.com/Cpetak/Urchin_inversions/blob/main/Coverage.md)
 
 
