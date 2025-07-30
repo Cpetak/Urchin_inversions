@@ -1,21 +1,21 @@
-GO:0032205,negative regulation of telomere maintena...,2,2,0,3.1e-06
-GO:0032211,negative regulation of telomere maintena...,2,2,0,3.1e-06
-GO:1900037,regulation of cellular response to hypox...,2,2,0,3.1e-06
+GO:0032205,negative regulation of telomere maintenance,2,2,0,3.1e-06
+GO:0032211,negative regulation of telomere maintenance.,2,2,0,3.1e-06
+GO:1900037,regulation of cellular response to hypoxia,2,2,0,3.1e-06
 GO:1900038,negative regulation of cellular response...,2,2,0,3.1e-06
 GO:1903297,regulation of hypoxia-induced intrinsic ...,2,2,0,3.1e-06
 GO:1903298,negative regulation of hypoxia-induced i...,2,2,0,3.1e-06
-GO:1904357,negative regulation of telomere maintena...,2,2,0,3.1e-06
+GO:1904357,negative regulation of telomere maintenance,2,2,0,3.1e-06
 GO:1990144,intrinsic apoptotic signaling pathway in...,2,2,0,3.1e-06
 GO:2000279,negative regulation of DNA biosynthetic ...,2,2,0,3.1e-06
 GO:0032210,regulation of telomere maintenance via t...,3,2,0.01,9.2e-06
 GO:1904356,regulation of telomere maintenance via t...,3,2,0.01,9.2e-06
 GO:2000278,regulation of DNA biosynthetic process,3,2,0.01,9.2e-06
-GO:2001243,negative regulation of intrinsic apoptot...,4,2,0.01,1.8e-05
+GO:2001243,negative regulation of intrinsic apoptosis,4,2,0.01,1.8e-05
 GO:0032204,regulation of telomere maintenance,5,2,0.01,3.1e-05
 GO:0008544,epidermis development,6,2,0.01,4.6e-05
 GO:0009913,epidermal cell differentiation,6,2,0.01,4.6e-05
 GO:0030855,epithelial cell differentiation,7,2,0.01,6.4e-05
-GO:2001242,regulation of intrinsic apoptotic signal...,8,2,0.01,8.5e-05
+GO:2001242,regulation of intrinsic apoptotic signaling,8,2,0.01,8.5e-05
 GO:0036294,cellular response to decreased oxygen le...,9,2,0.02,0.00011
 GO:0071453,cellular response to oxygen levels,9,2,0.02,0.00011
 GO:0071456,cellular response to hypoxia,9,2,0.02,0.00011
@@ -43,7 +43,7 @@ GO:0071345,cellular response to cytokine stimulus,41,2,0.07,0.00241
 GO:0038007,netrin-activated signaling pathway,151,3,0.27,0.00241
 GO:0034097,response to cytokine,44,2,0.08,0.00277
 GO:0042221,response to chemical,819,6,1.46,0.00290
-GO:1902532,negative regulation of intracellular sig...,53,2,0.09,0.00400
+GO:1902532,negative regulation of intracellular signaling,53,2,0.09,0.00400
 GO:0097190,apoptotic signaling pathway,55,2,0.1,0.00430
 GO:0070887,cellular response to chemical stimulus,635,5,1.13,0.00496
 GO:0051052,regulation of DNA metabolic process,63,2,0.11,0.00560

@@ -5,7 +5,7 @@ library(readr)
 library(stringr)
 
 # Read topGO output CSV without column names and assign names explicitly
-topgo_data <- read_csv("NW_022145594.1_39429440_42445994_GoEn1.csv", col_names = FALSE) # Replace with your file path
+topgo_data <- read_csv("go_enrich_results/NW_022145594.1_39429440_42445994_GoEn1.csv", col_names = FALSE) # Replace with your file path
 
 #Specifying GO terms to keep due to p-value adjustments and geneontology.com hierarchical structure
 go_to_keep <- c("GO:1900037", "GO:0032205", "GO:2001243", "GO:0008544", "GO:0009913", "GO:0030855", "GO:0043124", "GO:2001242", "GO:1902532","GO:0010521","GO:0140313","GO:0140311","GO:0008395", "GO:1990879", "GO:0034663", "GO:0000782", "GO:0140445", "GO:0030126", "GO:0030663", "GO:0032993")
@@ -61,27 +61,12 @@ p <- ggplot(topgo_filtered, aes(x = GeneRatio,
     panel.grid.minor = element_line(color = "gray70")
   )
 
-p
+#NOTE: some labels are cut off on the left side of the figure. This is because the csv files already have them cut off!
+#Meaning that in order to make them look nice, you make to manually replace the entries in the csv file with the longer version of the label.
+#E.g. hypo... to hypoxia!
+#I've done this for inversion 2.
 
 ggsave(
-  filename = "594_2_GO.pdf", # File name
+  filename = "inv2_GO_plot.pdf", # File name
   plot = p)
-
-topgo_filtered
-
-library(stringr)
-filtered_data <- topgo_filtered %>%
-  filter(str_detect(GO_term, "oxygen"))
-print(filtered_data$GO)
-print(filtered_data$GO_term)
-
-print(filtered_data)
-
-go_to_keep
-
-length(unique(go_to_keep))
-
-topgo_filtered$GO
-
-length(go_to_keep[go_to_keep %in% topgo_filtered$GO])
 
