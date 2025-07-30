@@ -13,3 +13,20 @@ Steps and code for:
 
 can be found in [this markdown.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_1.md)
 
+## Part 2
+
+Steps and code for:
+
+- Fst calculation between homokaryotype groups
+- Linkage disequilibrium calculation
+
+can be found in [this markdown.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_2.md)
+
+
+## Other
+
+Other analyses that didn't make it into the paper: 
+
+- [Heterozygosity](https://github.com/Cpetak/Urchin_inversions/blob/main/Heterozygosity.md)
+
+
