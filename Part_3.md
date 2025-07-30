@@ -79,4 +79,6 @@ Does GO enrichment for all three kinds of categories listed above for all three 
 
 **All resulting files can be found at: go_enrich_results on Zenodo TODO.**
 
-Code to make the Figure 5 go enrichment subfigure: 
+Code to make the Figure 5 go enrichment subfigure: [go_enrich_figure.R](https://github.com/Cpetak/Urchin_inversions/blob/main/go_enrich_figure.R)
+Figure can be found in the intermediary_files directory.
+
