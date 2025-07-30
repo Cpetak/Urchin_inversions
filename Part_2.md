@@ -138,3 +138,99 @@ Combined LD files can be found in Zenodo ld_data directory. TODO
 Run [plot_LD.R](https://github.com/Cpetak/Urchin_inversions/blob/main/plot_LD.R), `Rscript plot_LD.R NW_022145594.1 50000`, output is a pdf.
 
 LD plots for each inversion can be found in the intermediary_files directory.
+
+### Triangle plot for specific region
+
+For zooming in a specific region, repeat above but with a subsetted vcf
+
+***NOTE:*** Above code can be used the same but file names only include chromosome and LD window size so make sure to move output figures to avoid overwriting them!
+
+For region 12702886 - 16793794 plus padding: 8702886 - 20793794. 
+
+`Rscript ../local_pca_pipe/LD_get_num_windows.R NW_022145594.1_8702886_20793794.gds 10000` -> 1208
+
+### U-plot:
+
+For the U-plot, I calculated the LD for each pair of SNPs, in the 12702886 - 16793794 range, only keeping r2>0.6 to reduce the file size.
+
+```bash
+sed 's/_//g' NW_022145594.1_12702886_16793794.vcf > ld_input_NW_022145594.1_12702886_16793794.vcf
+./plink --vcf ld_input_NW_022145594.1_12702886_16793794.vcf --recode --allow-extra-chr --out NW_022145594.1_12702886_16793794_plink
+./plink --file NW_022145594.1_12702886_16793794_plink --make-bed --allow-extra-chr --out NW_022145594.1_12702886_16793794_afterQC
+./plink --bfile NW_022145594.1_12702886_16793794_afterQC --r2 --allow-extra-chr --ld-window-r2 0.6 --ld-window 100000000 --ld-window-kb 100000000 --out NW_022145594.1_12702886_16793794_resultLD
+```
+
+Note:
+```bash
+--ld-window 10 #compare 2 SNPS only if they are within 10 SNPS apart
+--ld-window-kb 1000 #compare 2 SNPS only if they are within 1.000.000 bp apart (both needs to be true)
+--ld-window-r2 0 #output any LD value, regardless of what it is. default would be 0.2, so only values that are above 0.2 are written to file
+```
+
+## Nucleotide diversity
+
+For each chromosome, need to be done only once:
+
+```bash
+filtered=/users/c/p/cpetak/EG2023/structural_variation/filtered_bcf_files/NW_022145594.1
+# spack load vcftools@0.1.14
+vcftools --vcf $filtered/NW_022145594.1_filtered.vcf --site-pi --out NW_022145594.1_nuc_div
+```
+
+Output: Pi nucleotide diversity for each site.
+
+`vcftools --vcf ${filtered}/NW_022145594.1_filtered.vcf --window-pi 10000 --out NW_022145594.1_nuc_div` 
+
+Output: Pi average over windows.
+
+`vcftools --vcf ${filtered}/NW_022145594.1_filtered.vcf --TajimaD 10000 --out NW_022145594.1_nuc_div`
+
+Output: Tajima's D over windows.
+
+### Zoom in and plot homozygotes only and q and p separately
+
+For example, region: 12.702.886-16.793.794, expanded by 100,000 both ends -> 12.602.886 - 16.893.794
+
+1. Subset vcf to extended region of interest, like in Part 1. 
+
+2. Get only homozygotes to one orientation:
+
+```bash
+#spack load bcftools@1.10.2
+bcftools view -S NW_022145594.1_12702886_16793794_vcf_list_homop -o NW_022145594.1_12602886_16893794_homop.vcf NW_022145594.1_12602886_16893794.vcf
+bcftools view -S NW_022145594.1_12702886_16793794_vcf_list_homoq -o NW_022145594.1_12602886_16893794_homoq.vcf NW_022145594.1_12602886_16893794.vcf
+```
+```bash
+chr="NW_022145594.1" start=12702886 stop=16793794
+myfolder=~/EG2023/structural_variation/filtered_bcf_files/${chr}
+bcftools view -S ${chr}_${start}_${stop}_vcf_list_homop -o ${chr}_${start}_${stop}_homop.vcf ${myfolder}/${chr}_filtered.vcf
+bcftools view -S ${chr}_${start}_${stop}_vcf_list_homoq -o ${chr}_${start}_${stop}_homoq.vcf ${myfolder}/${chr}_filtered.vcf
+```
+
+3. Calculate nucleotide diversity like above, smaller window size.
+
+```bash
+vcftools --vcf ${chr}_${start}_${stop}_homop.vcf --window-pi 100 --out ${chr}_${start}_${stop}_nuc_div_homop
+vcftools --vcf ${chr}_${start}_${stop}_homoq.vcf --window-pi 100 --out ${chr}_${start}_${stop}_nuc_div_homoq
+
+vcftools --vcf ${chr}_${start}_${stop}_homop.vcf --TajimaD 100 --out ${chr}_${start}_${stop}_nuc_div_homop
+vcftools --vcf ${chr}_${start}_${stop}_homoq.vcf --TajimaD 100 --out ${chr}_${start}_${stop}_nuc_div_homoq
+```
+
+Adding 100,000 was not enough, doing same as above but with whole chromosome instead (then zooming in at plotting)
+
+```bash
+bcftools view -S NW_022145594.1_12702886_16793794_vcf_list_homop -o NW_022145594.1_homop.vcf ${filtered}/NW_022145594.1_filtered.vcf
+bcftools view -S NW_022145594.1_12702886_16793794_vcf_list_homoq -o NW_022145594.1_homoq.vcf ${filtered}/NW_022145594.1_filtered.vcf
+vcftools --vcf NW_022145594.1_homop.vcf --window-pi 10000 --out NW_022145594.1_nuc_div_homop
+vcftools --vcf NW_022145594.1_homoq.vcf --window-pi 10000 --out NW_022145594.1_nuc_div_homoq
+vcftools --vcf NW_022145594.1_homoq.vcf --TajimaD 10000 --out NW_022145594.1_nuc_div_homoq
+vcftools --vcf NW_022145594.1_homop.vcf --TajimaD 10000 --out NW_022145594.1_nuc_div_homop
+```
+
+Nucleotide diversity data is available on Zenodo nuc_div_data directory TODO.
+For plotting nucleotide diversities: [nuc_div.ipynb](https://github.com/Cpetak/Urchin_inversions/blob/main/nuc_div.ipynb)
+**Figure 2, supplementary figure of nucleotide diversities and Figure 5 subplot with PI diversity and SNP count are all plotted here!**
+
+
+

@@ -19,6 +19,7 @@ Steps and code for:
 
 - Fst calculation between homokaryotype groups
 - Linkage disequilibrium calculation
+- Nucleotide diversity
 
 can be found in [this markdown.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_2.md)
 

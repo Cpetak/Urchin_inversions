@@ -490,6 +490,41 @@ pdf.</p>
 <p>LD plots for each inversion can be found in the intermediary_files
 directory.</p>
 </div>
+<div id="triangle-plot-for-specific-region" class="section level3">
+<h3>Triangle plot for specific region</h3>
+<p>For zooming in a specific region, repeat above but with a subsetted
+vcf</p>
+<p><strong><em>NOTE:</em></strong> Above code can be used the same but
+file names only include chromosome and LD window size so make sure to
+move output figures to avoid overwriting them!</p>
+<p>For region 12702886 - 16793794 plus padding: 8702886 - 20793794.</p>
+<p><code>Rscript ../local_pca_pipe/LD_get_num_windows.R NW_022145594.1_8702886_20793794.gds 10000</code>
+-&gt; 1208</p>
+</div>
+<div id="u-plot" class="section level3">
+<h3>U-plot:</h3>
+<p>For the U-plot, I calculated the LD for each pair of SNPs, in the
+12702886 - 16793794 range, only keeping r2&gt;0.6 to reduce the file
+size.</p>
+<pre class="bash"><code>sed &#39;s/_//g&#39; NW_022145594.1_12702886_16793794.vcf &gt; ld_input_NW_022145594.1_12702886_16793794.vcf
+./plink --vcf ld_input_NW_022145594.1_12702886_16793794.vcf --recode --allow-extra-chr --out NW_022145594.1_12702886_16793794_plink
+./plink --file NW_022145594.1_12702886_16793794_plink --make-bed --allow-extra-chr --out NW_022145594.1_12702886_16793794_afterQC
+./plink --bfile NW_022145594.1_12702886_16793794_afterQC --r2 --allow-extra-chr --ld-window-r2 0.6 --ld-window 100000000 --ld-window-kb 100000000 --out NW_022145594.1_12702886_16793794_resultLD</code></pre>
+<p>Note:</p>
+<pre class="bash"><code>--ld-window 10 #compare 2 SNPS only if they are within 10 SNPS apart
+--ld-window-kb 1000 #compare 2 SNPS only if they are within 1.000.000 bp apart (both needs to be true)
+--ld-window-r2 0 #output any LD value, regardless of what it is. default would be 0.2, so only values that are above 0.2 are written to file</code></pre>
+</div>
+</div>
+<div id="nucleotide-diversity" class="section level2">
+<h2>Nucleotide diversity</h2>
+<p>For each chromosome, need to be done only once:</p>
+<pre class="bash"><code>filtered=/users/c/p/cpetak/EG2023/structural_variation/filtered_bcf_files/NW_022145594.1
+# spack load vcftools@0.1.14
+vcftools --vcf $filtered/NW_022145594.1_filtered.vcf --site-pi --out NW_022145594.1_nuc_div</code></pre>
+<p>Output: Pi nucleotide diversity for each site.</p>
+<p><code>vcftools --vcf ${filtered}/NW_022145594.1_filtered.vcf --window-pi 10000 --out NW_022145594.1_nuc_div</code></p>
+<p>Output: Pi average over windows.</p>
 </div>
 </div>
 
