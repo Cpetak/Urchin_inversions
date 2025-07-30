@@ -1,0 +1,39 @@
+GO:0045329,carnitine biosynthetic process,13,2,0.01,5.4e-05
+GO:0006578,amino-acid betaine biosynthetic process,15,2,0.01,7.3e-05
+GO:0009437,carnitine metabolic process,19,2,0.02,0.00012
+GO:0006577,amino-acid betaine metabolic process,21,2,0.02,0.00015
+GO:0042398,cellular modified amino acid biosyntheti...,45,2,0.04,0.00068
+GO:0006378,mRNA polyadenylation,1,1,0,0.00086
+GO:0019249,lactate biosynthetic process,1,1,0,0.00086
+GO:0031440,regulation of mRNA 3'-end processing,1,1,0,0.00086
+GO:0043631,RNA polyadenylation,1,1,0,0.00086
+GO:0110104,mRNA alternative polyadenylation,1,1,0,0.00086
+GO:1900363,regulation of mRNA polyadenylation,1,1,0,0.00086
+GO:0097320,plasma membrane tubulation,3,1,0,0.00259
+GO:0009159,deoxyribonucleoside monophosphate catabo...,4,1,0,0.00345
+GO:0009438,methylglyoxal metabolic process,4,1,0,0.00345
+GO:0019243,methylglyoxal catabolic process to D-lac...,4,1,0,0.00345
+GO:0051596,methylglyoxal catabolic process,4,1,0,0.00345
+GO:0061727,methylglyoxal catabolic process to lacta...,4,1,0,0.00345
+GO:0006657,CDP-choline pathway,5,1,0,0.00431
+GO:0006089,lactate metabolic process,7,1,0.01,0.00602
+GO:0006646,phosphatidylethanolamine biosynthetic pr...,8,1,0.01,0.00688
+GO:0009125,nucleoside monophosphate catabolic proce...,8,1,0.01,0.00688
+GO:0046185,aldehyde catabolic process,8,1,0.01,0.00688
+GO:0006575,cellular modified amino acid metabolic p...,151,2,0.13,0.00733
+GO:0042182,ketone catabolic process,9,1,0.01,0.00774
+GO:0046337,phosphatidylethanolamine metabolic proce...,9,1,0.01,0.00774
+GO:0009162,deoxyribonucleoside monophosphate metabo...,10,1,0.01,0.00859
+GO:0008336,gamma-butyrobetaine dioxygenase activity,9,2,0.01,1.5e-05
+GO:0004142,diacylglycerol cholinephosphotransferase...,1,1,0,0.00067
+GO:0019172,glyoxalase III activity,1,1,0,0.00067
+GO:0004307,ethanolaminephosphotransferase activity,2,1,0,0.00134
+GO:0016706,2-oxoglutarate-dependent dioxygenase act...,86,2,0.06,0.00147
+GO:0017169,CDP-alcohol phosphatidyltransferase acti...,4,1,0,0.00267
+GO:0070694,deoxyribonucleoside 5'-monophosphate N-g...,4,1,0,0.00267
+GO:0030619,U1 snRNA binding,5,1,0,0.00334
+GO:0051213,dioxygenase activity,140,2,0.09,0.00383
+GO:0000993,RNA polymerase II complex binding,14,1,0.01,0.00932
+GO:0016593,Cdc73/Paf1 complex,8,1,0.01,0.0059
+GO:0005847,mRNA cleavage and polyadenylation specif...,12,1,0.01,0.0089
+GO:0043229,intracellular organelle,9259,12,6.88,0.0097

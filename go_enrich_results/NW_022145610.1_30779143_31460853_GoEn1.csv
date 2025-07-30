@@ -1,0 +1,30 @@
+GO:0045842,positive regulation of mitotic metaphase...,5,1,0,0.0011
+GO:1901970,positive regulation of mitotic sister ch...,5,1,0,0.0011
+GO:1902101,positive regulation of metaphase/anaphas...,5,1,0,0.0011
+GO:1905820,positive regulation of chromosome separa...,5,1,0,0.0011
+GO:0045840,positive regulation of mitotic nuclear d...,6,1,0,0.0013
+GO:0051785,positive regulation of nuclear division,6,1,0,0.0013
+GO:0070979,protein K11-linked ubiquitination,7,1,0,0.0015
+GO:1901992,positive regulation of mitotic cell cycl...,9,1,0,0.0019
+GO:1901989,positive regulation of cell cycle phase ...,10,1,0,0.0022
+GO:0045931,positive regulation of mitotic cell cycl...,11,1,0,0.0024
+GO:0031145,anaphase-promoting complex-dependent cat...,14,1,0,0.0030
+GO:0090068,positive regulation of cell cycle proces...,21,1,0,0.0045
+GO:0030071,regulation of mitotic metaphase/anaphase...,22,1,0,0.0047
+GO:0045787,positive regulation of cell cycle,23,1,0,0.0050
+GO:1902099,regulation of metaphase/anaphase transit...,24,1,0.01,0.0052
+GO:0007088,regulation of mitotic nuclear division,25,1,0.01,0.0054
+GO:0007091,metaphase/anaphase transition of mitotic...,26,1,0.01,0.0056
+GO:0010965,regulation of mitotic sister chromatid s...,26,1,0.01,0.0056
+GO:0051783,regulation of nuclear division,26,1,0.01,0.0056
+GO:0051306,mitotic sister chromatid separation,27,1,0.01,0.0058
+GO:0044784,metaphase/anaphase transition of cell cy...,28,1,0.01,0.0060
+GO:1905818,regulation of chromosome separation,28,1,0.01,0.0060
+GO:0033045,regulation of sister chromatid segregati...,30,1,0.01,0.0065
+GO:0051983,regulation of chromosome segregation,31,1,0.01,0.0067
+GO:0033044,regulation of chromosome organization,38,1,0.01,0.0082
+GO:0010638,positive regulation of organelle organiz...,42,1,0.01,0.0090
+GO:0016702,oxidoreductase activity, acting on singl...,45,1,0.01,0.0064
+GO:0016701,oxidoreductase activity, acting on singl...,46,1,0.01,0.0066
+GO:0005680,anaphase-promoting complex,18,1,0,0.0042
+GO:0000152,nuclear ubiquitin ligase complex,34,1,0.01,0.0079

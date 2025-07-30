@@ -1,0 +1,49 @@
+GO:0016042,lipid catabolic process,304,4,0.28,0.00014
+GO:0007224,smoothened signaling pathway,27,2,0.02,0.00027
+GO:0048193,Golgi vesicle transport,202,3,0.19,0.00077
+GO:0001706,endoderm formation,1,1,0,0.00092
+GO:0006532,aspartate biosynthetic process,1,1,0,0.00092
+GO:0007492,endoderm development,1,1,0,0.00092
+GO:0006014,D-ribose metabolic process,2,1,0,0.00183
+GO:0006531,aspartate metabolic process,2,1,0,0.00183
+GO:0001704,formation of primary germ layer,3,1,0,0.00275
+GO:0009052,pentose-phosphate shunt, non-oxidative b...,3,1,0,0.00275
+GO:0007369,gastrulation,4,1,0,0.00366
+GO:0006888,endoplasmic reticulum to Golgi vesicle-m...,127,2,0.12,0.00591
+GO:0006904,vesicle docking involved in exocytosis,8,1,0.01,0.00731
+GO:0043650,dicarboxylic acid biosynthetic process,8,1,0.01,0.00731
+GO:0090522,vesicle tethering involved in exocytosis,8,1,0.01,0.00731
+GO:0019321,pentose metabolic process,9,1,0.01,0.00822
+GO:0048598,embryonic morphogenesis,9,1,0.01,0.00822
+GO:0006629,lipid metabolic process,926,4,0.85,0.00871
+GO:0046599,regulation of centriole replication,10,1,0.01,0.00913
+GO:0016298,lipase activity,172,4,0.11,3.0e-06
+GO:0016788,hydrolase activity, acting on ester bond...,1024,6,0.64,1.7e-05
+GO:0017018,myosin phosphatase activity,43,2,0.03,0.00032
+GO:0004751,ribose-5-phosphate isomerase activity,1,1,0,0.00062
+GO:0004722,protein serine/threonine phosphatase act...,68,2,0.04,0.00079
+GO:0004069,L-aspartate:2-oxoglutarate aminotransfer...,2,1,0,0.00124
+GO:0000995,RNA polymerase III general transcription...,3,1,0,0.00186
+GO:0016787,hydrolase activity,3641,7,2.26,0.00308
+GO:0001006,RNA polymerase III type 3 promoter seque...,5,1,0,0.00310
+GO:0008330,protein tyrosine/threonine phosphatase a...,5,1,0,0.00310
+GO:0033550,MAP kinase tyrosine phosphatase activity,5,1,0,0.00310
+GO:0000992,RNA polymerase III cis-regulatory region...,7,1,0,0.00434
+GO:0001016,RNA polymerase III transcription regulat...,7,1,0,0.00434
+GO:0004694,eukaryotic translation initiation factor...,7,1,0,0.00434
+GO:0017017,MAP kinase tyrosine/serine/threonine pho...,7,1,0,0.00434
+GO:0033549,MAP kinase phosphatase activity,10,1,0.01,0.00619
+GO:0004721,phosphoprotein phosphatase activity,200,2,0.12,0.00661
+GO:0008138,protein tyrosine/serine/threonine phosph...,13,1,0.01,0.00804
+GO:0016861,intramolecular oxidoreductase activity, ...,13,1,0.01,0.00804
+GO:0005793,endoplasmic reticulum-Golgi intermediate...,24,2,0.02,0.00022
+GO:0060170,ciliary membrane,47,2,0.04,0.00086
+GO:0030134,COPII-coated ER to Golgi transport vesic...,51,2,0.05,0.00102
+GO:0031253,cell projection membrane,63,2,0.06,0.00155
+GO:0032584,growth cone membrane,3,1,0,0.00278
+GO:0000126,transcription factor TFIIIB complex,4,1,0,0.00371
+GO:0005615,extracellular space,729,4,0.68,0.00409
+GO:0033116,endoplasmic reticulum-Golgi intermediate...,5,1,0,0.00464
+GO:0030135,coated vesicle,113,2,0.1,0.00487
+GO:0097550,transcription preinitiation complex,6,1,0.01,0.00556
+GO:0030426,growth cone,8,1,0.01,0.00741

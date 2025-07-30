@@ -1,0 +1,23 @@
+GO:0098609,cell-cell adhesion,229,6,0.12,6.7e-10
+GO:0007155,cell adhesion,571,7,0.31,2.8e-09
+GO:0002164,larval development,9,1,0,0.0048
+GO:0007508,larval heart development,9,1,0,0.0048
+GO:0048569,post-embryonic animal organ development,9,1,0,0.0048
+GO:0061343,cell adhesion involved in heart morphoge...,9,1,0,0.0048
+GO:0003007,heart morphogenesis,10,1,0.01,0.0054
+GO:0009791,post-embryonic development,10,1,0.01,0.0054
+GO:0007507,heart development,13,1,0.01,0.0070
+GO:0050839,cell adhesion molecule binding,91,6,0.08,1.0e-10
+GO:0004060,arylamine N-acetyltransferase activity,17,2,0.01,9.4e-05
+GO:0004714,transmembrane receptor protein tyrosine ...,81,2,0.07,0.0022
+GO:0019199,transmembrane receptor protein kinase ac...,91,2,0.08,0.0027
+GO:0008080,N-acetyltransferase activity,99,2,0.09,0.0032
+GO:0016410,N-acyltransferase activity,106,2,0.09,0.0037
+GO:0016407,acetyltransferase activity,115,2,0.1,0.0043
+GO:0004713,protein tyrosine kinase activity,149,2,0.13,0.0071
+GO:0005911,cell-cell junction,82,6,0.08,1.3e-10
+GO:0070161,anchoring junction,129,6,0.13,2.1e-09
+GO:0030054,cell junction,589,6,0.57,1.6e-05
+GO:0071944,cell periphery,3716,12,3.62,4.3e-05
+GO:0005886,plasma membrane,3418,11,3.33,0.00012
+GO:0016020,membrane,11369,18,11.09,0.00169

@@ -1,0 +1,97 @@
+GO:0032205,negative regulation of telomere maintena...,2,2,0,3.1e-06
+GO:0032211,negative regulation of telomere maintena...,2,2,0,3.1e-06
+GO:1900037,regulation of cellular response to hypox...,2,2,0,3.1e-06
+GO:1900038,negative regulation of cellular response...,2,2,0,3.1e-06
+GO:1903297,regulation of hypoxia-induced intrinsic ...,2,2,0,3.1e-06
+GO:1903298,negative regulation of hypoxia-induced i...,2,2,0,3.1e-06
+GO:1904357,negative regulation of telomere maintena...,2,2,0,3.1e-06
+GO:1990144,intrinsic apoptotic signaling pathway in...,2,2,0,3.1e-06
+GO:2000279,negative regulation of DNA biosynthetic ...,2,2,0,3.1e-06
+GO:0032210,regulation of telomere maintenance via t...,3,2,0.01,9.2e-06
+GO:1904356,regulation of telomere maintenance via t...,3,2,0.01,9.2e-06
+GO:2000278,regulation of DNA biosynthetic process,3,2,0.01,9.2e-06
+GO:2001243,negative regulation of intrinsic apoptot...,4,2,0.01,1.8e-05
+GO:0032204,regulation of telomere maintenance,5,2,0.01,3.1e-05
+GO:0008544,epidermis development,6,2,0.01,4.6e-05
+GO:0009913,epidermal cell differentiation,6,2,0.01,4.6e-05
+GO:0030855,epithelial cell differentiation,7,2,0.01,6.4e-05
+GO:2001242,regulation of intrinsic apoptotic signal...,8,2,0.01,8.5e-05
+GO:0036294,cellular response to decreased oxygen le...,9,2,0.02,0.00011
+GO:0071453,cellular response to oxygen levels,9,2,0.02,0.00011
+GO:0071456,cellular response to hypoxia,9,2,0.02,0.00011
+GO:2001234,negative regulation of apoptotic signali...,12,2,0.02,0.00020
+GO:0007004,telomere maintenance via telomerase,13,2,0.02,0.00024
+GO:0001666,response to hypoxia,14,2,0.02,0.00028
+GO:0036293,response to decreased oxygen levels,14,2,0.02,0.00028
+GO:0010833,telomere maintenance via telomere length...,15,2,0.03,0.00032
+GO:0060429,epithelium development,17,2,0.03,0.00041
+GO:2001251,negative regulation of chromosome organi...,17,2,0.03,0.00041
+GO:0034612,response to tumor necrosis factor,19,2,0.03,0.00051
+GO:0071356,cellular response to tumor necrosis fact...,19,2,0.03,0.00051
+GO:2001233,regulation of apoptotic signaling pathwa...,19,2,0.03,0.00051
+GO:0070482,response to oxygen levels,21,2,0.04,0.00063
+GO:0006891,intra-Golgi vesicle-mediated transport,22,2,0.04,0.00069
+GO:0051053,negative regulation of DNA metabolic pro...,22,2,0.04,0.00069
+GO:0097193,intrinsic apoptotic signaling pathway,24,2,0.04,0.00083
+GO:0006890,retrograde vesicle-mediated transport, G...,27,2,0.05,0.00105
+GO:0043066,negative regulation of apoptotic process,34,2,0.06,0.00166
+GO:0043069,negative regulation of programmed cell d...,35,2,0.06,0.00176
+GO:0060548,negative regulation of cell death,35,2,0.06,0.00176
+GO:0033044,regulation of chromosome organization,38,2,0.07,0.00207
+GO:0009888,tissue development,39,2,0.07,0.00218
+GO:0071345,cellular response to cytokine stimulus,41,2,0.07,0.00241
+GO:0038007,netrin-activated signaling pathway,151,3,0.27,0.00241
+GO:0034097,response to cytokine,44,2,0.08,0.00277
+GO:0042221,response to chemical,819,6,1.46,0.00290
+GO:1902532,negative regulation of intracellular sig...,53,2,0.09,0.00400
+GO:0097190,apoptotic signaling pathway,55,2,0.1,0.00430
+GO:0070887,cellular response to chemical stimulus,635,5,1.13,0.00496
+GO:0051052,regulation of DNA metabolic process,63,2,0.11,0.00560
+GO:0080135,regulation of cellular response to stres...,63,2,0.11,0.00560
+GO:0000723,telomere maintenance,64,2,0.11,0.00577
+GO:0032200,telomere organization,66,2,0.12,0.00613
+GO:0010639,negative regulation of organelle organiz...,71,2,0.13,0.00706
+GO:0051129,negative regulation of cellular componen...,72,2,0.13,0.00726
+GO:0050794,regulation of cellular process,6060,18,10.78,0.00768
+GO:0006278,RNA-templated DNA biosynthetic process,77,2,0.14,0.00826
+GO:0045039,protein insertion into mitochondrial inn...,5,1,0.01,0.00886
+GO:0010521,telomerase inhibitor activity,4,2,0.01,1.6e-05
+GO:0008395,steroid hydroxylase activity,101,4,0.17,2.4e-05
+GO:0051059,NF-kappaB binding,7,2,0.01,5.7e-05
+GO:0000774,adenyl-nucleotide exchange factor activi...,10,2,0.02,0.00012
+GO:0060590,ATPase regulator activity,10,2,0.02,0.00012
+GO:0061629,RNA polymerase II-specific DNA-binding t...,17,2,0.03,0.00036
+GO:0004497,monooxygenase activity,260,4,0.43,0.00090
+GO:0042162,telomeric DNA binding,28,2,0.05,0.00100
+GO:0005506,iron ion binding,285,4,0.48,0.00126
+GO:0020037,heme binding,303,4,0.51,0.00158
+GO:0046906,tetrapyrrole binding,313,4,0.52,0.00178
+GO:0005042,netrin receptor activity,151,3,0.25,0.00203
+GO:0140297,DNA-binding transcription factor binding,43,2,0.07,0.00235
+GO:0043565,sequence-specific DNA binding,857,6,1.43,0.00271
+GO:0016705,oxidoreductase activity, acting on paire...,353,4,0.59,0.00275
+GO:0140662,ATP-dependent protein folding chaperone,56,2,0.09,0.00395
+GO:0008134,transcription factor binding,57,2,0.1,0.00409
+GO:0044183,protein folding chaperone,62,2,0.1,0.00482
+GO:0030943,mitochondrion targeting sequence binding,3,1,0.01,0.00501
+GO:0003697,single-stranded DNA binding,69,2,0.12,0.00594
+GO:0005198,structural molecule activity,469,4,0.78,0.00751
+GO:0003677,DNA binding,1823,8,3.05,0.00908
+GO:0030527,structural constituent of chromatin,88,2,0.15,0.00950
+GO:1990879,CST complex,3,2,0.01,8.6e-06
+GO:0034663,endoplasmic reticulum chaperone complex,4,2,0.01,1.7e-05
+GO:0000782,telomere cap complex,5,2,0.01,2.9e-05
+GO:0000783,nuclear telomere cap complex,5,2,0.01,2.9e-05
+GO:0140445,chromosome, telomeric repeat region,5,2,0.01,2.9e-05
+GO:0044815,DNA packaging complex,118,4,0.2,4.9e-05
+GO:0032993,protein-DNA complex,127,4,0.22,6.6e-05
+GO:0030126,COPI vesicle coat,9,2,0.02,0.00010
+GO:0030137,COPI-coated vesicle,10,2,0.02,0.00013
+GO:0030663,COPI-coated vesicle membrane,10,2,0.02,0.00013
+GO:0000781,chromosome, telomeric region,28,2,0.05,0.00106
+GO:0030660,Golgi-associated vesicle membrane,29,2,0.05,0.00113
+GO:0005798,Golgi-associated vesicle,33,2,0.06,0.00147
+GO:0030120,vesicle coat,60,2,0.1,0.00477
+GO:0140534,endoplasmic reticulum protein-containing...,67,2,0.12,0.00592
+GO:0030662,coated vesicle membrane,76,2,0.13,0.00756
+GO:0071541,eukaryotic translation initiation factor...,5,1,0.01,0.00856
