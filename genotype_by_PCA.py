@@ -8,6 +8,7 @@ import pandas as pd
 import argparse
 from scipy import stats
 from scipy.stats import chisquare
+import csv
 
 from sklearn.cluster import KMeans
 from sklearn.cluster import AgglomerativeClustering
@@ -148,12 +149,24 @@ else:
 
 pop_dic={}
 id_dic={}
+lens_for_props = []
+xs=[]
+ys=[]
+cs=[]
 for c in range(NUM_CLUST):
   t=np.where(np.array(clusts) == c)[0]
   print(len(t))
+  lens_for_props.append(len(t))
   x=[i[0] for i in dim[t]]
   y=[i[1] for i in dim[t]]
   plt.scatter(x,y,c=coloring_dic2[c],s=100)
+
+  #saving to file for separate recreation of the figure:
+  for data_idx in range(len(x)):
+    xs.append(x[data_idx])
+    ys.append(y[data_idx])
+    cs.append(coloring_dic2[c])
+
   avx=sum(x)/len(x)
   ids=pops[t]
   pop_dic[c]=[avx,ids]
@@ -164,6 +177,16 @@ plt.xticks([])
 plt.yticks([])
 print("made first figure")
 plt.savefig(args.df1[:-9]+"_PCA.pdf")
+
+with open(args.df1[:-9]+'_pca_data.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(xs)
+    writer.writerow(ys)
+    writer.writerow(cs)
+
+print("Hetero freq: ", lens_for_props[0]/(sum(lens_for_props)))
+print("Homop freq: ", lens_for_props[1]/(sum(lens_for_props)))
+print("Homoq freq: ", lens_for_props[2]/(sum(lens_for_props)))
 
 if NUM_CLUST == 3: #code to find "homozygote minor allele, heterozygote, homozygote major allele"
   sorted_values = sorted(pop_dic.values(), key=lambda x: x[0]) #sort based on average value along PC1
@@ -343,9 +366,6 @@ if NUM_CLUST == 3:
       file.write(str(ehomop/len(homop)) + "\n")
       file.write(str(ehete/len(hetero)) + "\n")
 
-
-p_freq = het_freqs/[2] + homop_freqs
-print(homop_freqs/(homop_freqs+het_freqs+homoq_freqs))
 
 slope, intercept, r_value, p_value, std_err = stats.linregress(NS_coordinates, het_freqs)
 print("hetero correlation")
