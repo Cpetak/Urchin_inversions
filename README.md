@@ -30,6 +30,7 @@ Steps and code for:
 - Finding inversion markers
 - GO enrichment
 - SnpEff - predicting SNP effect
+- Time to most recent common ancestor using GEVA
 
 can be found in [Part 3.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_3.md)
 

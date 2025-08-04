@@ -160,3 +160,97 @@ repeat with cname=594_inv
 
 **Outputs analysed and figures made in [snpeff.ipynb](https://github.com/Cpetak/Urchin_inversions/blob/main/snpeff.ipynb).**
 
+# Age estimation using GEVA
+
+## Step 1: Set up
+
+Cloned GEVA from: https://github.com/pkalbers/geva?tab=readme-ov-file, then compiled using make.
+
+Got code to run it from: https://github.com/Jcbnunez/Cville-Seasonality-2016-2019/blob/main/CODE/9.0.GEVA_allele_age/2.run_geva_dmel.sh
+
+For phasing, downloaded static release for shapit5 from: https://github.com/odelaneau/shapeit5/releases
+Then: `chmod +x phase_common_static`
+
+## Step 2: Making the Guide files
+
+Code to make the guide file:
+
+```python
+import sys
+
+def generate_ranges(start, label, stop, filename="guide_file.txt", step=100000):
+    start = int(start)  # Ensure start is an integer
+    stop = int(stop)  # Ensure stop is an integer
+
+    with open(filename, "w") as f:
+        while start + step <= stop:
+            end = start + step
+            range_col = f"{label}:{start}-{end-1}"
+            f.write(f"{start}\t{end}\t{label}\t{step}\t{end-1}\t{start}\t{range_col}\n")
+            start = end  # Update start for the next row
+
+if __name__ == "__main__":
+    if len(sys.argv) != 4:
+        print("Usage: python script.py <start> <label> <stop>")
+    else:
+        start_value = sys.argv[1]
+        label_value = sys.argv[2]
+        stop_value = sys.argv[3]
+        generate_ranges(start_value, label_value, stop_value)
+```
+
+To run it: `python make_guide.py 1 NW_022145594.1 500000`
+
+## Step 3: Preparing vcf files and environment
+
+```bash
+srun -p bluemoon -N1 --mem=20G --pty bash
+
+spack load bcftools@1.10.2
+spack load vcftools@0.1.14
+conda activate wgs #has tabix
+
+mychr=NW_022145594.1
+cp /users/c/p/cpetak/EG2023/structural_variation/filtered_bcf_files/${mychr}/${mychr}_filtered.vcf .
+input_vcf=${mychr}_filtered.vcf
+
+bgzip $input_vcf
+tabix ${input_vcf}.gz
+
+./phase_common_static --input ${input_vcf}.gz --region $mychr --output ${input_vcf}_phased.bcf
+bcftools view -Ov -o ${input_vcf}_phased.vcf ${input_vcf}_phased.bcf
+
+input_vcf=${input_vcf}_phased.vcf
+
+bgzip $input_vcf
+tabix ${input_vcf}.gz
+
+vcftools --gzvcf ${input_vcf}.gz --recode --recode-INFO-all --out ${input_vcf}_processed
+
+bgzip ${input_vcf}_processed.recode.vcf
+tabix ${input_vcf}_processed.recode.vcf.gz
+```
+
+Put all of the above in a script called prep_files_for_chr.sh, which just takes the chromosome name as an argument and does all of the above. 
+
+Will need to run spack and conda before submitting job!
+
+
+## Step 4: Running script
+
+Making guide_file: 
+
+```bash
+mychr=NW_022145615.1 #guidefile made, not job submitted
+input_vcf=${mychr}_filtered.vcf_phased.vcf_processed.recode.vcf.gz
+read start stop < <(bcftools view -H ${input_vcf} | awk 'NR==1 {first=$2} {last=$2} END {print first, last}')
+python make_guide.py $start $mychr $stop
+
+sbatch --array=1-$( cat guide_file_${mychr}.txt | wc -l) run_geva.sh guide_file_${mychr}.txt 0.01 geva_results $input_vcf
+```
+
+To launch jobs one after another use the arraylauncher.py script.
+
+**Analysis and code for the figure can be found in [tmrca.ipynb](https://github.com/Cpetak/Urchin_inversions/blob/main/tmrca.ipynb).**
+
+**Output files can be found in the tmrca_results directory on Zenodo** TODO
