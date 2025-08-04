@@ -361,6 +361,133 @@ display: none;
 <p>Csv files with SNP inversion markers can be found in the
 intermediary_files directory.</p>
 </div>
+<div id="go-enrichment-for-a-specific-region" class="section level2">
+<h2>GO Enrichment for a specific region</h2>
+<div id="step-1---list-of-go-terms" class="section level3">
+<h3>Step 1 - List of GO terms</h3>
+<p>Uniprot has GO terms associated to each gene in the urchin genome,
+here is the link to retrieve that info: <a href="https://www.ebi.ac.uk/QuickGO/annotations?taxonId=7668&amp;taxonUsage=exact" class="uri">https://www.ebi.ac.uk/QuickGO/annotations?taxonId=7668&amp;taxonUsage=exact</a>.</p>
+<p>Used this code to transform uniprot - GO output file into the mapping
+file topGO expects:</p>
+<pre class="bash"><code>awk -F &quot;\t&quot; &#39;{print $2&quot;\t&quot;$5}&#39; QuickGO-annotations-1642716310981-20220120.tsv &gt; temp_mapping
+sed &#39;$!N; /^\(.*\)\n\1$/!P; D&#39; temp_mapping &gt; temp2_mapping # It deletes duplicate, consecutive lines from a file
+awk &#39;BEGIN{FS=&quot;\t&quot;} {for(i=2; i&lt;=NF; i++) { if (!a[$1]) a[$1]=$1FS$i ;else a[$1]=a[$1]&quot;,&quot;$i};if ($1 != old) b[j++] = a[old];old=$1 } END{for (i=0; i&lt;j; i++) print b[i] }&#39; temp2_mapping &gt; GO_mapping_topGO #it collapses repeated lines into 1, comma separated, output file is in this git repo</code></pre>
+</div>
+<div id="step-2---list-of-loc-to-uniprot-ids" class="section level3">
+<h3>Step 2 - List of LOC to Uniprot IDs</h3>
+<p>Downloaded the gff file from the NCBI genome assembly Spur_5.0 <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000002235.5/" class="uri">https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000002235.5/</a></p>
+<p>Processed file with:</p>
+<p><code>grep -o &#39;gene=LOC[0-9]\+&#39; genomic.gff | sed &#39;s/;.*//&#39; | awk -F= &#39;{print $2}&#39; &gt; all_locs_gff</code></p>
+<p><code>sed &#39;$!N; /^\(.*\)\n\1$/!P; D&#39; all_locs_gff &gt; all_locs_gff2</code></p>
+<p>To get the list of genes (LOC). 32,087 genes.</p>
+<p>Uploaded these LOC gene names to <a href="https://www.uniprot.org/uploadlists/" class="uri">https://www.uniprot.org/uploadlists/</a> From Ensemble
+Genomes To uniprot. Downloaded results in tsv format. 3 columns: LOC id,
+uniprot id, uniprot id _STRPU. Since a LOC id can map to more than 1
+uniprot ids, I used the following code to select a specific uniprot id
+for each LOC to avoid biasing the GO analysis:</p>
+<p>Run: <code>python loc2uniprot.py</code>, <a href="https://github.com/Cpetak/Urchin_inversions/blob/main/loc2uniprot.py">loc2uniprot.py</a></p>
+<p>Output: all_locs_to_uniprotIDs.txt Note: to use, needed to sort file
+using the <code>sort all_locs_to_uniprotIDs.txt</code> command.</p>
+</div>
+<div id="step-3---get-list-of-interesting-locs-and-uniprot-ids" class="section level3">
+<h3>Step 3 - Get list of interesting LOCs and Uniprot IDs</h3>
+<p>To get the list of genes that are of interest from the NCBI
+annotation file (Run bash GO_from_region.sh NW_022145594.1 12702886
+13424367):</p>
+<pre class="bash"><code>chr=$1
+start=$2
+stop=$3
+
+#Most inclusive, includes genes that start before the end of the region (stop) and ends after the start of the region (start). So, it includes genes that span the entire region, the genes that start before the start of the region and end somewhere in the middle, genes that start somewhere in the middle and end outside of the region, and genes that are entirely included.
+awk -v mychr=$chr &#39;$1 == mychr&#39; ~/WGS/Urchin_inversions/supp_files/genomic.gff | awk -v mystart=$start &#39;$5 &gt;= mystart {print}&#39; | awk -v mystop=$stop &#39;$4 &lt;= mystop {print}&#39; | awk -v myname=&#39;gene&#39; &#39;$3 == myname {print}&#39; | grep -o &#39;gene=LOC[0-9]\+&#39; | awk -F= &#39;{print $2}&#39; | sort | uniq &gt; ${1}_${2}_${3}_locs1.txt
+
+#More conservative, subset of the first locs list. Only includes genes that start and end within the region.
+awk -v mychr=$chr &#39;$1 == mychr&#39; ~/WGS/Urchin_inversions/supp_files/genomic.gff | awk -v mystart=$start &#39;$4 &gt;= mystart {print}&#39; | awk -v mystop=$stop &#39;$5 &lt;= mystop {print}&#39; | awk -v myname=&#39;gene&#39; &#39;$3 == myname {print}&#39; | grep -o &#39;gene=LOC[0-9]\+&#39; | awk -F= &#39;{print $2}&#39; | sort | uniq &gt; ${1}_${2}_${3}_locs2.txt
+
+#Only includes genes that start before the start and end after the start. Includes genes that span entire region. It is a subset of the first locs list. The point is that it lists genes the left breakpoint disrupts.
+awk -v mychr=$chr &#39;$1 == mychr&#39; ~/WGS/Urchin_inversions/supp_files/genomic.gff | awk -v mystart=$start &#39;$5 &gt;= mystart {print}&#39; | awk -v mystart=$start &#39;$4 &lt;= mystart {print}&#39; | awk -v myname=&#39;gene&#39; &#39;$3 == myname {print}&#39; | grep -o &#39;gene=LOC[0-9]\+&#39; | awk -F= &#39;{print $2}&#39; | sort | uniq &gt; ${1}_${2}_${3}_locs3_1.txt
+
+#Only includes genes that start before the end and end after the end. Includes genes that span entire region. It is a subset of the first locs list. The point is that it lists genes the right breakpoint disrupts.
+awk -v mychr=$chr &#39;$1 == mychr&#39; ~/WGS/Urchin_inversions/supp_files/genomic.gff | awk -v mystop=$stop &#39;$5 &gt;= mystop {print}&#39; | awk -v mystop=$stop &#39;$4 &lt;= mystop {print}&#39; | awk -v myname=&#39;gene&#39; &#39;$3 == myname {print}&#39; | grep -o &#39;gene=LOC[0-9]\+&#39; | awk -F= &#39;{print $2}&#39; | sort | uniq &gt; ${1}_${2}_${3}_locs3_2.txt
+
+#Subset of first locs list, doesn&#39;t include genes that are inside the region, not crossing the breakpoints (second locs list). So this set is A - B, where A is all the genes (first locs list), B is only genes in the middle of the region (second locs list)
+cat ${1}_${2}_${3}_locs3_1.txt ${1}_${2}_${3}_locs3_2.txt | sort | uniq &gt; ${1}_${2}_${3}_locs3.txt</code></pre>
+<p>Output: list of gene names (LOC)</p>
+<p>Then, to turn LOCS into Uniprot IDs:</p>
+<pre class="bash"><code>join -t, -1 1 -2 1 -o 1.1,2.2 ${1}_${2}_${3}_locs1.txt ~/WGS/Urchin_inversions/supp_files/all_locs_to_uniprotIDs.txt | awk -F, &#39;{print $2}&#39; &gt; ${1}_${2}_${3}_uniprot1.txt
+join -t, -1 1 -2 1 -o 1.1,2.2 ${1}_${2}_${3}_locs2.txt ~/WGS/Urchin_inversions/supp_files/all_locs_to_uniprotIDs.txt | awk -F, &#39;{print $2}&#39; &gt; ${1}_${2}_${3}_uniprot2.txt
+join -t, -1 1 -2 1 -o 1.1,2.2 ${1}_${2}_${3}_locs3.txt ~/WGS/Urchin_inversions/supp_files/all_locs_to_uniprotIDs.txt | awk -F, &#39;{print $2}&#39; &gt; ${1}_${2}_${3}_uniprot3.txt</code></pre>
+</div>
+<div id="step-4---run-go" class="section level3">
+<h3>Step 4 - Run GO</h3>
+<p>Run:
+<code>Rscript go_enrichment.R NW_022145594.1 12702886 13424367</code>
+(has to be the same inputs as for above steps), <a href="https://github.com/Cpetak/local_pca_pipe/blob/main/go_enrichment.R">go_enrichment.R</a></p>
+<p>Does GO enrichment for all three kinds of categories listed above for
+all three kids of GO (biological process, cellular component, molecular
+function) which are combined into one file. So 3 output files in
+total.</p>
+<p><strong>All resulting files can be found at: go_enrich_results on
+Zenodo TODO.</strong></p>
+<p>Code to make the Figure 5 go enrichment subfigure: <a href="https://github.com/Cpetak/Urchin_inversions/blob/main/go_enrich_figure.R">go_enrich_figure.R</a></p>
+<p>Figure can be found in the intermediary_files directory.</p>
+</div>
+</div>
+<div id="snpeff---predicting-effect-of-snps" class="section level2">
+<h2>SnpEff - predicting effect of SNPs</h2>
+<p>Package description of SnpEff can be found <a href="https://pcingola.github.io/SnpEff/snpeff/introduction/">here</a>.</p>
+<p>Downloaded package and tested on example:
+<code>java -Xmx8g -jar snpEff.jar -v GRCh37.75 examples/test.chr22.vcf &gt; test.chr22.ann.vcf</code></p>
+<p>Worked as intended.</p>
+<p>Run:</p>
+<p><code>java -Xmx8g -jar snpEff.jar -v Strongylocentrotus_purpuratus examples/NW_022145594.1_filtered.vcf &gt; 594_test.vcf</code></p>
+<p>This successfully downloaded the Strongylocentrotus_purpuratus
+database SnpEff has had already. Knew the name from running:
+<code>java -jar snpEff.jar databases</code>. Got an error because the
+chromosome names in the SnpEff database were different from mine so
+NW_022145594.1 was not found. In the output text, it listed all its
+chromosome names and their corresponding lengths, so I just looked up
+the length of NW_022145594.1 from the NCBI assembly page and search for
+that in the list. AAGJ06000001.1 has exactly the same number of base
+pairs, 53101916.</p>
+<p>597 - 34141700 - AAGJ06000012.1</p>
+<p>600 - 37282239 - AAGJ06000015.1</p>
+<p>601 - 35007347 - AAGJ06000016.1</p>
+<p>603 - 34285068 - AAGJ06000018.1</p>
+<p>606 - 52437917 - AAGJ06000020.1</p>
+<p>609 - 39838600 - AAGJ06000003.1</p>
+<p>610 - 35917773 - AAGJ06000004.1</p>
+<p>So replaced the chromosome name and run:</p>
+<pre class="bash"><code>sed &#39;s/NW_022145594.1/AAGJ06000001.1/g&#39; examples/NW_022145594.1_filtered.vcf &gt; examples/NW_022145594.1_filtered_renamed.vcf
+java -Xmx8g -jar snpEff.jar -v Strongylocentrotus_purpuratus examples/NW_022145594.1_filtered_renamed.vcf &gt; 594_test.vcf</code></pre>
+<p>Output: - snpEff_summary.html - snpEff_genes.txt - table of genes and
+the variant effects - 594_test.vcf - additional column in the vcf file,
+shows the effect of the mutation</p>
+<p>Extract data from results files generated above: cname=594 (all
+<code>java -Xmx8g -jar snpEff.jar -v Strongylocentrotus_purpuratus ${chr}_filtered_renamed.vcf &gt; ${cname}_snpeff.vcf</code>,
+<code>mv snpEff_summary.html ${cname}_snpEff_summary.html</code>,
+<code>bash get_html_vals.sh ${cname}_snpEff_summary.html ${cname}.csv</code>)</p>
+<p>get_html_vals.sh (that calls extract_intergenic.py) extracts values
+of interest from the html file.</p>
+<p>Repeat with vcf file containing only the inversion:
+<code>bash subset_vcf.sh $chr $actustart $actustop</code> cname=594_inv
+<code>java -Xmx8g -jar snpEff.jar -v Strongylocentrotus_purpuratus ${chr}_${actustart}_${actustop}.vcf &gt; ${cname}_snpeff.vcf</code>,
+<code>mv snpEff_summary.html ${cname}_snpEff_summary.html</code>,
+<code>bash get_html_vals.sh ${cname}_snpEff_summary.html ${cname}.csv</code></p>
+<p><strong>Code above is gathered in get_snpeff_results.sh.</strong></p>
+<p>To get allele frequencies: cname=594</p>
+<p><code>bcftools view -i &#39;ANN[*] ~ &quot;HIGH&quot;&#39; ${cname}_snpeff.vcf &gt; high_${cname}_snpeff.vcf</code>
+<code>vcftools --vcf high_${cname}_snpeff.vcf --freq --out high_${cname}_snpeff_freq.txt</code></p>
+<p><code>bcftools view -i &#39;ANN[*] ~ &quot;LOW&quot;&#39; ${cname}_snpeff.vcf &gt; low_${cname}_snpeff.vcf</code>
+<code>vcftools --vcf low_${cname}_snpeff.vcf --freq --out low_${cname}_snpeff_freq.txt</code></p>
+<p><code>bcftools view -i &#39;ANN[*] ~ &quot;MODERATE&quot;&#39; ${cname}_snpeff.vcf &gt; mod_${cname}_snpeff.vcf</code>
+<code>vcftools --vcf mod_${cname}_snpeff.vcf --freq --out mod_${cname}_snpeff_freq.txt</code></p>
+<p>repeat with cname=594_inv</p>
+<p><strong>Code above is gathered in get_afs.sh</strong></p>
+<p><strong>Resulting files can be found here: snpeff_results
+directory.</strong> TODO add to zenodo</p>
+<p><strong>Outputs analysed and figures made in <a href="https://github.com/Cpetak/Urchin_inversions/blob/main/snpeff.ipynb">snpeff.ipynb</a>.</strong></p>
+</div>
 </div>
 
 
