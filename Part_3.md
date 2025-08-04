@@ -82,3 +82,70 @@ Does GO enrichment for all three kinds of categories listed above for all three 
 Code to make the Figure 5 go enrichment subfigure: [go_enrich_figure.R](https://github.com/Cpetak/Urchin_inversions/blob/main/go_enrich_figure.R)
 Figure can be found in the intermediary_files directory.
 
+## SnpEff - predicting effect of SNPs
+
+Package description of SnpEff can be found [here](https://pcingola.github.io/SnpEff/snpeff/introduction/).
+
+Downloaded package and tested on example: `java -Xmx8g -jar snpEff.jar -v GRCh37.75 examples/test.chr22.vcf > test.chr22.ann.vcf`
+
+Worked as intended.
+
+Run:
+
+`java -Xmx8g -jar snpEff.jar -v Strongylocentrotus_purpuratus examples/NW_022145594.1_filtered.vcf > 594_test.vcf`
+
+This successfully downloaded the Strongylocentrotus_purpuratus database SnpEff has had already. Knew the name from running: `java -jar snpEff.jar databases`.
+Got an error because the chromosome names in the SnpEff database were different from mine so NW_022145594.1 was not found.
+In the output text, it listed all its chromosome names and their corresponding lengths, so I just looked up the length of NW_022145594.1 from the NCBI assembly page and search for that in the list. AAGJ06000001.1 has exactly the same number of base pairs, 53101916.
+
+597 - 34141700 - AAGJ06000012.1
+600 - 37282239 - AAGJ06000015.1
+601 - 35007347 - AAGJ06000016.1
+603 - 34285068 - AAGJ06000018.1
+606 - 52437917 - AAGJ06000020.1
+609 - 39838600 - AAGJ06000003.1
+610 - 35917773 - AAGJ06000004.1
+
+So replaced the chromosome name and run:
+
+```bash
+sed 's/NW_022145594.1/AAGJ06000001.1/g' examples/NW_022145594.1_filtered.vcf > examples/NW_022145594.1_filtered_renamed.vcf
+java -Xmx8g -jar snpEff.jar -v Strongylocentrotus_purpuratus examples/NW_022145594.1_filtered_renamed.vcf > 594_test.vcf
+```
+
+Output:
+- snpEff_summary.html
+- snpEff_genes.txt - table of genes and the variant effects
+- 594_test.vcf - additional column in the vcf file, shows the effect of the mutation
+
+Extract data from results files generated above:
+cname=594
+(all `java -Xmx8g -jar snpEff.jar -v Strongylocentrotus_purpuratus ${chr}_filtered_renamed.vcf > ${cname}_snpeff.vcf`,
+`mv snpEff_summary.html ${cname}_snpEff_summary.html`,
+`bash get_html_vals.sh ${cname}_snpEff_summary.html ${cname}.csv`)
+
+get_html_vals.sh (that calls extract_intergenic.py) extracts values of interest from the html file.
+
+Repeat with vcf file containing only the inversion:
+`bash subset_vcf.sh $chr $actustart $actustop`
+cname=594_inv
+`java -Xmx8g -jar snpEff.jar -v Strongylocentrotus_purpuratus ${chr}_${actustart}_${actustop}.vcf > ${cname}_snpeff.vcf`
+`mv snpEff_summary.html ${cname}_snpEff_summary.html`
+`bash get_html_vals.sh ${cname}_snpEff_summary.html ${cname}.csv`
+
+**Code above is gathered in get_snpeff_results.sh.**
+
+To get allele frequencies:
+cname=594
+`bcftools view -i 'ANN[*] ~ "HIGH"' ${cname}_snpeff.vcf > high_${cname}_snpeff.vcf`
+`vcftools --vcf high_${cname}_snpeff.vcf --freq --out high_${cname}_snpeff_freq.txt`
+`bcftools view -i 'ANN[*] ~ "LOW"' ${cname}_snpeff.vcf > low_${cname}_snpeff.vcf`
+`vcftools --vcf low_${cname}_snpeff.vcf --freq --out low_${cname}_snpeff_freq.txt`
+`bcftools view -i 'ANN[*] ~ "MODERATE"' ${cname}_snpeff.vcf > mod_${cname}_snpeff.vcf`
+`vcftools --vcf mod_${cname}_snpeff.vcf --freq --out mod_${cname}_snpeff_freq.txt`
+repeat with cname=594_inv
+
+**Code above is gathered in get_afs.sh**
+**Resulting files can be found here: snpeff_results directory.** TODO add to zenodo
+**Outputs analysed and figures made in [snpeff.ipynb](https://github.com/Cpetak/Urchin_inversions/blob/main/snpeff.ipynb).**
+
