@@ -327,3 +327,6 @@ OUT: AA, Aa or aa for each individual and PCA plot, with map
 
 **For changing/recreating figure 1: [Fig1.md](https://github.com/Cpetak/Urchin_inversions/blob/main/Fig1.md)**
 
+**For changing/recreating subplots with PCA where individuals are colored by population: [PCA_notebook.ipynb](https://github.com/Cpetak/Urchin_inversions/blob/main/PCA_notebook.ipynb)**
+
+Note: PCA_notebook.ipynb also has code for 6-way grouping for inversion 5.
