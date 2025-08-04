@@ -189,7 +189,9 @@ To run for every snp length independently, a one-line:
 
 Then can rerun specific ones to adjust alpha.
 
-**Results of the local PCA analysis can be found here: TODO Zenodo link. Already uploaded, not published yet.**
+**Results of the local PCA analysis can be found here: TODO Zenodo link.**
+
+Note: Figures and code to make supp figure 1 with the "Genome-wide patterns of local PCA" can be found in the intermediary_files directory and in the global_local_PCA.ipynb.
 
 ## Finding putative breakpoints
 

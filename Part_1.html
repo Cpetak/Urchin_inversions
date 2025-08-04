@@ -523,7 +523,10 @@ for every snp length independently, a one-line:
 <code>for snp in 500 1000 5000 10000; do bash 2_2_local_pca_vis.sh NW_022145594.1 snp $snp 0.05; done</code></p>
 <p>Then can rerun specific ones to adjust alpha.</p>
 <p><strong>Results of the local PCA analysis can be found here: TODO
-Zenodo link. Already uploaded, not published yet.</strong></p>
+Zenodo link.</strong></p>
+<p>Note: Figures and code to make supp figure 1 with the “Genome-wide
+patterns of local PCA” can be found in the intermediary_files directory
+and in the global_local_PCA.ipynb.</p>
 </div>
 <div id="finding-putative-breakpoints" class="section level2">
 <h2>Finding putative breakpoints</h2>
@@ -559,10 +562,9 @@ for the PCA analysis, and this might include windows that were not
 outliers in the local PCA analysis.</p>
 <p>For all of the steps below, conda activate wgs. (grn is for local PCA
 and LD only)</p>
-<div id="step-1-make-a-vcf-file-that-only-includes-the-region-of-interest-for" class="section level3">
+<div id="step-1-make-a-vcf-file-that-only-includes-the-region-of-interest-for-our-chromosome." class="section level3">
 <h3>Step 1: Make a vcf file that only includes the region of interest
-for</h3>
-<p>our chromosome.</p>
+for our chromosome.</h3>
 <pre class="bash"><code>chrom=$1
 mystart=$2
 myend=$3
@@ -577,8 +579,8 @@ cat vcf_header_noout temp.vcf &gt; $outfilename
 rm temp.vcf</code></pre>
 <p>run: <code>bash subset_bcf.sh NW_022145594.1 12670717 16440127</code>
 where it is chromosome, start, end. Looks for a vcf file in the common
-data folder for that chromosome (EG2023), output is also a vcf in the
-curr directory</p>
+data folder for that chromosome, output is also a vcf in the curr
+directory</p>
 </div>
 <div id="step-2-convert-vcf-to-gds" class="section level3">
 <h3>Step 2: Convert vcf to gds</h3>
@@ -635,16 +637,24 @@ write.csv(my_df2, result2, row.names=FALSE)</code></pre>
 <code>Rscript do_pca.R NW_022145594.1_12670717_16440127.gds</code> does
 PCA and writes PC1 and PC2 to csv files.</p>
 </div>
-<div id="step-4-assign-individuals-to-genotype-groups-make-plots" class="section level3">
-<h3>Step 4: Assign individuals to genotype groups, make plots</h3>
-<p>Python file, <a href="https://github.com/Cpetak/local_pca_pipe/blob/main/genotype_by_PCA.py">genotype_by_PCA.py</a></p>
+<div id="step-4-assign-individuals-to-genotype-groups-make-plots-correlate-with-latitude" class="section level3">
+<h3>Step 4: Assign individuals to genotype groups, make plots, correlate
+with latitude</h3>
+<p>Python file, <a href="https://github.com/Cpetak/Urchin_inversions/blob/main/genotype_by_PCA.py">genotype_by_PCA.py</a></p>
 <p>run:
-<code>python genotype_by_PCA.py NW_022145594.1_12670717_16440127_dim1.csv NW_022145594.1_12670717_16440127_dim2.csv 3 NW_022145594.1_12670717_16440127_perc_explained.csv</code>,
 <code>python genotype_by_PCA.py NW_022145594.1_12702886_16793794_dim1.csv NW_022145594.1_12702886_16793794_dim2.csv 3 NW_022145594.1_12702886_16793794_perc_explained.csv</code>
 3 is number of clusters, output is 2 csv files with individual IDs
 (1-140) for each homozygote group and PCA, elbow, pie, line and map
-plots, and chi-square results to txt file</p>
+plots, and chi-square results to txt file.</p>
 <p>OUT: AA, Aa or aa for each individual and PCA plot, with map</p>
+<p><strong>Resulting genotype frequencies are summarized here: <a href="https://github.com/Cpetak/Urchin_inversions/blob/main/genotype_freqs.txt">genotype_freqs.txt</a></strong></p>
+<p><strong>Resulting plots are in this directory:
+intermediary_files</strong></p>
+<p><strong>For changing/recreating figure 1: <a href="https://github.com/Cpetak/Urchin_inversions/blob/main/Fig1.md">Fig1.md</a></strong></p>
+<p><strong>For changing/recreating subplots with PCA where individuals
+are colored by population: <a href="https://github.com/Cpetak/Urchin_inversions/blob/main/PCA_notebook.ipynb">PCA_notebook.ipynb</a></strong></p>
+<p>Note: PCA_notebook.ipynb also has code for 6-way grouping for
+inversion 5.</p>
 </div>
 </div>
 </div>
