@@ -3,16 +3,19 @@
 #Read packages
 library(readr)
 library(ggplot2)
+library(patchwork)
+library(cowplot)
 
 #Subfigure B
 
 #Find all files
-dir_path <- "intermediary_files/inv9"
+dir_path <- "intermediary_files"
 
 files <- list.files(
   path = dir_path,
   pattern = "_pca_data\\.csv$",
-  full.names = TRUE
+  full.names = TRUE,
+  recursive = TRUE
 )
 
 #Read csvs
@@ -31,10 +34,66 @@ all_df <- do.call(rbind, all_df)
 
 #Make PCAs
 
-p <- ggplot(all_df, aes(x = x, y = y, color = color)) +
+# build the plot
+p <- ggplot(all_df, aes(x, y, color = color)) +
   geom_point() +
   facet_wrap(~ file, nrow = 1) +
   xlab("X") +
-  ylab("Y")
+  ylab("Y") +
+  theme(strip.text = element_text(size = 8))
 
-ggsave("all_pca_plots.png", p, width = 4 * length(files), height = 4)
+# save the figure
+ggsave(
+  filename = "all_pca_plots.png",
+  plot = p,
+  width = 3 * length(files),   # adjust width per number of files
+  height = 3,                  # adjust height as needed
+  dpi = 300
+)
+
+#Two rows, where last "subplot" is legend
+
+#Function to create plots
+make_plot <- function(file_name) {
+  df <- subset(all_df, file == file_name)
+  ggplot(df, aes(x, y, color = color)) +
+    geom_point() +
+    theme_minimal() +
+    theme(legend.position = "none",
+    panel.grid = element_blank(),
+    axis.line = element_line(color = "black"))
+}
+
+# Make plots
+n_files <- length(files)
+first_row_files <- basename(files)[1:5]
+second_row_files <- basename(files)[6:9]
+
+plots_row1 <- lapply(first_row_files, make_plot)
+plots_row2 <- lapply(second_row_files, make_plot)
+
+# Add empty placeholder for legend in last cell of second row
+plots_row2[[5]] <- ggplot() + theme_void()
+
+# Extract legend from one plot
+legend_plot <- ggplot(subset(all_df, file == first_row_files[1]),
+                      aes(x, y, color = color)) +
+  geom_point() +
+  theme_minimal() +
+  theme(legend.position = "right")
+legend <- get_legend(legend_plot)
+
+
+# Add legend to second row
+plots_row2[[5]] <- legend
+
+# Combine everything
+final_plot <- plot_grid(
+  plotlist = c(plots_row1, plots_row2),
+  ncol = 5,
+  align = 'hv'
+)
+
+# save
+ggsave("all_pca_plots_custom_layout.png", final_plot,
+       width = 18, height = 8, dpi = 300, bg = "white")
