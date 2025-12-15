@@ -4,24 +4,37 @@
 library(readr)
 library(ggplot2)
 
-#Read csv
+#Subfigure B
 
-df <- read_csv(
-  "intermediary_files/inv9/NW_022145610.1_30779143_31460853_pca_data.csv",
-  col_names = FALSE
+#Find all files
+dir_path <- "intermediary_files/inv9"
+
+files <- list.files(
+  path = dir_path,
+  pattern = "_pca_data\\.csv$",
+  full.names = TRUE
 )
 
-df <- as.data.frame(t(df))
-colnames(df) <- c("x", "y", "color")
+#Read csvs
+# read all files into one data frame
+all_df <- lapply(files, function(f) {
+  df <- read_csv(f, col_names = FALSE)
+  df <- as.data.frame(t(df))
+  colnames(df) <- c("x", "y", "color")
+  df$x <- as.numeric(df$x)
+  df$y <- as.numeric(df$y)
+  df$file <- basename(f)
+  df
+})
 
-df$x <- as.numeric(df$x)
-df$y <- as.numeric(df$y)
+all_df <- do.call(rbind, all_df)
 
-#Make PCA
+#Make PCAs
 
-p <- ggplot(df, aes(x = x, y = y, color = color)) +
+p <- ggplot(all_df, aes(x = x, y = y, color = color)) +
   geom_point() +
+  facet_wrap(~ file, nrow = 1) +
   xlab("X") +
   ylab("Y")
 
-ggsave("test_R_PCA.png", plot = p)
+ggsave("all_pca_plots.png", p, width = 4 * length(files), height = 4)
