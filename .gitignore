@@ -6,3 +6,4 @@ genotype_spec_vcfs
 supp_files
 snpeff_results
 tmrca_results
+go_enrich_results
