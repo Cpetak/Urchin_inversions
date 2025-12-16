@@ -32,25 +32,6 @@ all_df <- lapply(files, function(f) {
 
 all_df <- do.call(rbind, all_df)
 
-#Make PCAs
-
-# build the plot
-p <- ggplot(all_df, aes(x, y, color = color)) +
-  geom_point() +
-  facet_wrap(~ file, nrow = 1) +
-  xlab("X") +
-  ylab("Y") +
-  theme(strip.text = element_text(size = 8))
-
-# save the figure
-ggsave(
-  filename = "all_pca_plots.png",
-  plot = p,
-  width = 3 * length(files),   # adjust width per number of files
-  height = 3,                  # adjust height as needed
-  dpi = 300
-)
-
 #Two rows, where last "subplot" is legend
 
 #Function to create plots
@@ -97,3 +78,7 @@ final_plot <- plot_grid(
 # save
 ggsave("all_pca_plots_custom_layout.png", final_plot,
        width = 18, height = 8, dpi = 300, bg = "white")
+
+
+#Subfigure A
+
