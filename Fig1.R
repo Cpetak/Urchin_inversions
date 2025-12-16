@@ -39,6 +39,9 @@ make_plot <- function(file_name) {
   df <- subset(all_df, file == file_name)
   ggplot(df, aes(x, y, color = color)) +
     geom_point() +
+    scale_color_manual(values = c(C0 = "#1f77b4",
+                                C1 = "#ff7f0e",
+                                C2 = "#2ca02c")) +
     theme_minimal() +
     theme(legend.position = "none",
     panel.grid = element_blank(),
@@ -60,8 +63,14 @@ plots_row2[[5]] <- ggplot() + theme_void()
 legend_plot <- ggplot(subset(all_df, file == first_row_files[1]),
                       aes(x, y, color = color)) +
   geom_point() +
+  scale_color_manual(
+    values = c(C0 = "#1f77b4", C1 = "#ff7f0e", C2 = "#2ca02c"),
+    labels = c(C0 = "Less frequent homokaryotypes", C1 = "More frequent homokaryotypes", C2 = "Heterokaryotypes"),
+    name = NULL
+  ) +
   theme_minimal() +
-  theme(legend.position = "right")
+  theme(legend.position = "right",
+  legend.text = element_text(size = 14))
 legend <- get_legend(legend_plot)
 
 

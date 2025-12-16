@@ -50,15 +50,17 @@ for (i in seq_along(all_chrs)) {
 }
 
 plot_df <- do.call(rbind, all_data)
+plot_df <- plot_df[!is.na(plot_df$value), ]
 
 plot_df$sign <- ifelse(plot_df$value < 0, "negative", "positive")
 
 p <- ggplot(plot_df, aes(x = pos, y = abs(value), color = sign)) +
   geom_point(size = 0.6) +
-  facet_wrap(~ chromosome, nrow = 1, scales = "free") +
+  facet_wrap(~ panel, nrow = 1, scales = "free") +
+  scale_y_continuous(limits = c(0, 0.8)) +
   labs(
     x = "Genomic position",
-    y = "Local PCA MDS values"
+    y = "Local PCA |MDS values|"
   ) +
   scale_color_manual(values = c(negative = "red", positive = "black")) +
   theme_bw() +
@@ -68,5 +70,5 @@ p <- ggplot(plot_df, aes(x = pos, y = abs(value), color = sign)) +
     axis.title = element_text(size = 16)
   )
 
-ggsave("temp_all_mdss_fromR.pdf", p, width = 24, height =7)
+ggsave("temp_all_mdss_fromR.pdf", p, width = 24, height =4)
 
