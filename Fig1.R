@@ -32,16 +32,31 @@ all_df <- lapply(files, function(f) {
 
 all_df <- do.call(rbind, all_df)
 
+#Get PCA percent explained labels
+get_axis_labels <- function(file_name) {
+  label_file <- sub("_pca_data\\.csv$", "_perc_explained.csv", file_name)
+  label_path <- file.path(dir_path, label_file)
+  
+  labs_vec <- read_csv(label_path, col_names = FALSE, show_col_types = FALSE)[[1]]
+  
+  list(
+    x = as.character(labs_vec[1]),
+    y = as.character(labs_vec[2])
+  )
+}
+
 #Two rows, where last "subplot" is legend
 
 #Function to create plots
 make_plot <- function(file_name) {
   df <- subset(all_df, file == file_name)
+  labs_xy <- get_axis_labels(file_name)
   ggplot(df, aes(x, y, color = color)) +
     geom_point() +
     scale_color_manual(values = c(C0 = "#1f77b4",
                                 C1 = "#ff7f0e",
                                 C2 = "#2ca02c")) +
+    labs(x = labs_xy$x, y = labs_xy$y) +
     theme_minimal() +
     theme(legend.position = "none",
     panel.grid = element_blank(),
