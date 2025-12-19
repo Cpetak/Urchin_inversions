@@ -1,4 +1,5 @@
 # R script to produce Figure 1. 
+# module load R/4.5.1
 
 #Read packages
 library(readr)
@@ -34,14 +35,24 @@ all_df <- do.call(rbind, all_df)
 
 #Get PCA percent explained labels
 get_axis_labels <- function(file_name) {
-  label_file <- sub("_pca_data\\.csv$", "_perc_explained.csv", file_name)
-  label_path <- file.path(dir_path, label_file)
-  
-  labs_vec <- read_csv(label_path, col_names = FALSE, show_col_types = FALSE)[[1]]
-  
+  label_name <- sub("_pca_data\\.csv$", "_perc_explained.csv", file_name)
+
+  label_path <- list.files(
+    path = dir_path,
+    pattern = paste0("^", label_name, "$"),
+    full.names = TRUE,
+    recursive = TRUE
+  )
+
+  vals <- read_csv(label_path[1],
+                   col_names = FALSE,
+                   show_col_types = FALSE)[[1]]
+
+  vals <- round(as.numeric(vals), 2)
+
   list(
-    x = as.character(labs_vec[1]),
-    y = as.character(labs_vec[2])
+    x = as.character(vals[1]),
+    y = as.character(vals[2])
   )
 }
 
@@ -51,12 +62,20 @@ get_axis_labels <- function(file_name) {
 make_plot <- function(file_name) {
   df <- subset(all_df, file == file_name)
   labs_xy <- get_axis_labels(file_name)
+  idx <- match(file_name, c(first_row_files, second_row_files))
   ggplot(df, aes(x, y, color = color)) +
-    geom_point() +
+    geom_point(size = 3, alpha = 0.8) + #HERE to adjust size of dots! also adjust in legend! also the transparency
     scale_color_manual(values = c(C0 = "#1f77b4",
                                 C1 = "#ff7f0e",
                                 C2 = "#2ca02c")) +
-    labs(x = labs_xy$x, y = labs_xy$y) +
+    labs(x = paste0("PC 1, ", labs_xy$x, "%"), y = paste0("PC 2, ", labs_xy$y, "%")) +
+    annotate(
+      "text",
+      x = max(df$x, na.rm = TRUE), y = max(df$y, na.rm = TRUE),
+      label = idx,
+      hjust = 1.1, vjust = 2,
+      size = 6
+    ) +
     theme_minimal() +
     theme(legend.position = "none",
     panel.grid = element_blank(),
@@ -77,7 +96,7 @@ plots_row2[[5]] <- ggplot() + theme_void()
 # Extract legend from one plot
 legend_plot <- ggplot(subset(all_df, file == first_row_files[1]),
                       aes(x, y, color = color)) +
-  geom_point() +
+  geom_point(size = 3) + #HERE to adjust size of the dots!
   scale_color_manual(
     values = c(C0 = "#1f77b4", C1 = "#ff7f0e", C2 = "#2ca02c"),
     labels = c(C0 = "Less frequent homokaryotypes", C1 = "More frequent homokaryotypes", C2 = "Heterokaryotypes"),

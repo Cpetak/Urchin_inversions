@@ -52,23 +52,43 @@ for (i in seq_along(all_chrs)) {
 plot_df <- do.call(rbind, all_data)
 plot_df <- plot_df[!is.na(plot_df$value), ]
 
-plot_df$sign <- ifelse(plot_df$value < 0, "negative", "positive")
+plot_df$sign <- ifelse(plot_df$value < 0, "Negative", "Positive")
 
 p <- ggplot(plot_df, aes(x = pos, y = abs(value), color = sign)) +
-  geom_point(size = 0.6) +
+  geom_point(size = 2, alpha = 0.8) +
   facet_wrap(~ panel, nrow = 1, scales = "free") +
   scale_y_continuous(limits = c(0, 0.8)) +
   labs(
     x = "Genomic position",
     y = "Local PCA |MDS values|"
   ) +
-  scale_color_manual(values = c(negative = "red", positive = "black")) +
+  scale_color_manual(values = c(Negative = "red", Positive = "black"), name = NULL) +
   theme_bw() +
   theme(
-    strip.text = element_text(size = 14),
+    strip.text = element_blank(),
     axis.text  = element_text(size = 12),
     axis.title = element_text(size = 16)
+  ) +
+  geom_text(
+    data = data.frame(panel = unique(plot_df$panel), idx = unique(plot_df$panel)),
+    aes(x = Inf, y = Inf, label = idx),
+    inherit.aes = FALSE,
+    hjust = 2.5,   # center horizontally
+    vjust = 1.2,   # slightly above top
+    size = 6
   )
+
+library(cowplot)
+
+# Remove legend from main plot
+p_no_legend <- p + theme(legend.position = "none")
+
+# Extract legend from a plot
+legend <- get_legend(p + theme(legend.position = "right", legend.text = element_text(size = 14)))
+
+# Combine plot and legend, placing legend manually over leftmost facet
+p <- ggdraw(p_no_legend) +
+  draw_plot(legend, x = 0.89, y = 0.6, width = 0.15, height = 0.3)  # adjust x/y/width/height
 
 ggsave("temp_all_mdss_fromR.pdf", p, width = 24, height =4)
 
