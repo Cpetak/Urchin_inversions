@@ -60,43 +60,65 @@ plot_df <- do.call(rbind, all_data)
 plot_df <- plot_df[!is.na(plot_df$value), ] #drop NA
 plot_df$sign <- ifelse(plot_df$value < 0, "Negative", "Positive") #remember which is negative
 
-#Plot
-p <- ggplot(plot_df, aes(x = pos, y = abs(value), color = sign)) +
-  geom_point(size = 2, alpha = 0.8) + #HERE you can change the size of the dots
-  facet_wrap(~ panel, nrow = 1, scales = "free") +
-  scale_y_continuous(limits = c(0, 0.8)) + #HERE you can change the y axis limits
-  labs(
-    x = "Genomic position",
-    y = "Local PCA |MDS values|"
-  ) +
+#Plot (individual panels so legend can occupy last grid cell)
+make_panel_plot <- function(panel_num) {
+  dfp <- subset(plot_df, panel == panel_num)
+  ggplot(dfp, aes(x = pos, y = abs(value), color = sign)) +
+    geom_point(size = 2, alpha = 0.8) +
+    scale_x_continuous(labels = function(x) paste0(x / 1e6, "M")) +
+    scale_y_continuous(limits = c(0, 0.8)) +
+    scale_color_manual(values = c(Negative = "red", Positive = "black"), name = NULL) +
+    theme_minimal() +
+    theme(
+      strip.text = element_blank(),
+      axis.text  = element_text(size = 12),
+      axis.title = element_blank(),
+      legend.position = "none",
+      panel.grid = element_blank(),
+      axis.line = element_line(color = "black")
+    ) +
+    annotate( #labels 1-9
+      "text",
+      x = Inf, y = Inf, label = panel_num,
+      hjust = 2.5, vjust = 1.2,
+      size = 6
+    )
+}
+
+# Create panels 1-9
+panels <- lapply(1:9, make_panel_plot)
+
+# Arrange into two rows: first row 1-5, second row 6-9 + placeholder for legend
+panels_row1 <- panels[1:5]
+panels_row2 <- panels[6:9]
+panels_row2[[5]] <- ggplot() + theme_void()
+
+# Extract legend from a plot (showing legend)
+legend_plot <- ggplot(plot_df, aes(x = pos, y = abs(value), color = sign)) +
+  geom_point(size =4) +
   scale_color_manual(values = c(Negative = "red", Positive = "black"), name = NULL) +
   theme_bw() +
-  theme(
-    strip.text = element_blank(),
-    axis.text  = element_text(size = 12),
-    axis.title = element_text(size = 16)
-  ) +
-  geom_text( #HERE is where I label them 1-9
-    data = data.frame(panel = unique(plot_df$panel), idx = unique(plot_df$panel)),
-    aes(x = Inf, y = Inf, label = idx),
-    inherit.aes = FALSE,
-    hjust = 2.5,   # change hjust and vjust to adjust location of labels
-    vjust = 1.2,
-    size = 6
-  )
+  theme(legend.position = "right", legend.text = element_text(size = 18))
+legend <- get_legend(legend_plot)
 
-#Moving around legend so that it's not outside the whole plot
-# 1.Remove legend from main plot
-p_no_legend <- p + theme(legend.position = "none")
+# Place legend in the empty slot
+panels_row2[[5]] <- legend
 
-# 2.Extract legend from a plot
-legend <- get_legend(p + theme(legend.position = "right", legend.text = element_text(size = 14))) #HERE you can change size of legend labels
+final_plot_A <- plot_grid(
+  plotlist = c(panels_row1, panels_row2),
+  ncol = 5,
+  align = 'hv'
+)
 
-# 3.Combine plot and legend
-p <- ggdraw(p_no_legend) +
-  draw_plot(legend, x = 0.89, y = 0.6, width = 0.15, height = 0.3)  #HERE adjust position of legend
+# Draw the grid inset to create larger left/bottom margins, then add shared labels in those margins
+canvas <- ggdraw() +
+  draw_plot(final_plot_A, x = 0.06, y = 0.06, width = 0.88, height = 0.88)
 
-ggsave("Fig1_A.pdf", p, width = 24, height =4)
+final_plot_A_labeled <- canvas +
+  draw_label("Genomic position", x = 0.5, y = 0.02, vjust = 0, hjust = 0.5, size = 18) +
+  draw_label("Local PCA |MDS values|", x = 0.05, y = 0.5, angle = 90, vjust = 1, hjust = 0.5, size = 18)
+
+ggsave("Fig1_A.pdf", final_plot_A_labeled, width = 34, height = 12)
 
 #-----------------------------------------------------------------------------------------------
 
