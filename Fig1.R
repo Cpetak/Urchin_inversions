@@ -82,7 +82,7 @@ make_panel_plot <- function(panel_num) {
       "text",
       x = Inf, y = Inf, label = panel_num,
       hjust = 2.5, vjust = 1.2,
-      size = 6
+      size = 8
     )
 }
 
@@ -119,7 +119,7 @@ final_plot_A_labeled <- canvas +
   draw_label("Genomic position", x = 0.5, y = 0.01, vjust = 0, hjust = 0.5, size = 16) +
   draw_label("Local PCA |MDS values|", x = 0, y = 0.5, angle = 90, vjust = 1, hjust = 0.5, size = 16)
 
-ggsave("Fig1_A.png", final_plot_A_labeled, width = 20, height = 8, dpi = 300, bg = "black")
+ggsave("Fig1_A.png", final_plot_A_labeled, width = 20, height = 8, dpi = 300, bg = "white")
 
 #-----------------------------------------------------------------------------------------------
 
@@ -191,7 +191,7 @@ make_plot <- function(file_name) {
       x = max(df$x, na.rm = TRUE), y = max(df$y, na.rm = TRUE),
       label = idx,
       hjust = 1.1, vjust = 2, #HERE you can adjust location of labels
-      size = 6
+      size = 8
     ) +
     theme_minimal() +
     theme(legend.position = "none",
@@ -239,7 +239,7 @@ final_plot <- plot_grid(
   align = 'hv'
 )
 
-ggsave("Fig1_B.png", final_plot, width = 20, height = 8, dpi = 300, bg = "black")
+ggsave("Fig1_B.png", final_plot, width = 20, height = 8, dpi = 300, bg = "white")
 
 #-----------------------------------------------------------------------------------------------
 
