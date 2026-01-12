@@ -64,7 +64,7 @@ plot_df$sign <- ifelse(plot_df$value < 0, "Negative", "Positive") #remember whic
 make_panel_plot <- function(panel_num) {
   dfp <- subset(plot_df, panel == panel_num)
   ggplot(dfp, aes(x = pos, y = abs(value), color = sign)) +
-    geom_point(size = 2, alpha = 0.8) +
+    geom_point(size = 3, alpha = 0.8) +
     scale_x_continuous(labels = function(x) paste0(x / 1e6, "M")) +
     scale_y_continuous(limits = c(0, 0.8)) +
     scale_color_manual(values = c(Negative = "red", Positive = "black"), name = NULL) +
@@ -75,7 +75,8 @@ make_panel_plot <- function(panel_num) {
       axis.title = element_blank(),
       legend.position = "none",
       panel.grid = element_blank(),
-      axis.line = element_line(color = "black")
+      axis.line = element_line(color = "black"),
+      plot.margin = margin(t = 6, r = 6, b = 6, l = 12)
     ) +
     annotate( #labels 1-9
       "text",
@@ -95,10 +96,10 @@ panels_row2[[5]] <- ggplot() + theme_void()
 
 # Extract legend from a plot (showing legend)
 legend_plot <- ggplot(plot_df, aes(x = pos, y = abs(value), color = sign)) +
-  geom_point(size =4) +
+  geom_point(size =3) +
   scale_color_manual(values = c(Negative = "red", Positive = "black"), name = NULL) +
   theme_bw() +
-  theme(legend.position = "right", legend.text = element_text(size = 18))
+  theme(legend.position = "right", legend.text = element_text(size = 14))
 legend <- get_legend(legend_plot)
 
 # Place legend in the empty slot
@@ -112,13 +113,13 @@ final_plot_A <- plot_grid(
 
 # Draw the grid inset to create larger left/bottom margins, then add shared labels in those margins
 canvas <- ggdraw() +
-  draw_plot(final_plot_A, x = 0.06, y = 0.06, width = 0.88, height = 0.88)
+  draw_plot(final_plot_A, x = 0.01, y = 0.03, width = 0.99, height = 0.97)
 
 final_plot_A_labeled <- canvas +
-  draw_label("Genomic position", x = 0.5, y = 0.02, vjust = 0, hjust = 0.5, size = 18) +
-  draw_label("Local PCA |MDS values|", x = 0.05, y = 0.5, angle = 90, vjust = 1, hjust = 0.5, size = 18)
+  draw_label("Genomic position", x = 0.5, y = 0.01, vjust = 0, hjust = 0.5, size = 16) +
+  draw_label("Local PCA |MDS values|", x = 0, y = 0.5, angle = 90, vjust = 1, hjust = 0.5, size = 16)
 
-ggsave("Fig1_A.pdf", final_plot_A_labeled, width = 34, height = 12)
+ggsave("Fig1_A.png", final_plot_A_labeled, width = 20, height = 8, dpi = 300, bg = "black")
 
 #-----------------------------------------------------------------------------------------------
 
@@ -195,7 +196,10 @@ make_plot <- function(file_name) {
     theme_minimal() +
     theme(legend.position = "none",
     panel.grid = element_blank(),
-    axis.line = element_line(color = "black"))
+    axis.line = element_line(color = "black"),
+    axis.title.y = element_text(size = 16, margin = margin(r = -5, unit = "pt")),
+    axis.title.x = element_text(size = 16),
+    axis.text  = element_text(size = 12))
 }
 
 #BIT OF MAGIC to make the custom layout with the last "plot" being the legend
@@ -235,6 +239,16 @@ final_plot <- plot_grid(
   align = 'hv'
 )
 
-ggsave("Fig1_B.png", final_plot,
-       width = 18, height = 8, dpi = 300, bg = "white")
+ggsave("Fig1_B.png", final_plot, width = 20, height = 8, dpi = 300, bg = "black")
 
+#-----------------------------------------------------------------------------------------------
+
+# Combine Subfigure A and B into one plot
+combined_plot <- plot_grid(
+  final_plot_A_labeled,
+  final_plot,
+  ncol = 1,
+  align = 'v'
+)
+
+ggsave("Fig1_combined.png", combined_plot, width = 20, height = 16, dpi = 300, bg = "white")
