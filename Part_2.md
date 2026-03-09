@@ -99,14 +99,13 @@ plt.savefig(args.chr + "_" + str(args.start) + "_" + str(args.stop) + "fst_plot.
 
 OUTPUT: Fst value for each position in the chromosome, and Fst plot
 
-Resulting Fst files are on Zenodo in the fst_files directory. TODO
-Resulting plots (for inversions 1 and 6) are in the intermediary_files directory.
 
 ## Linkage disequilibrium
 
 ### Step 1: Chromosome vcf file to gds
 
 conda activate grn
+
 Run:
 `Rscript vcf2gds.R ${filtered}/NW_022145594.1_filtered.vcf NW_022145594.1`,
 same script from before, makes gds file
@@ -130,8 +129,6 @@ run: `sbatch makegrid_launcher.sh ~/WGS/inversion_results/NW_022145594.1.gds 500
 Run [gather_results.R](https://github.com/Cpetak/Urchin_inversions/blob/main/gather_results.R), `Rscript gather_results.R NW_022145594.1 50000` , output is combined_chrom_windowsize.Rdata
 
 Free up space: `rm -r makegrid_NW_022145594.1_50000`
-
-Combined LD files can be found in Zenodo ld_data directory. TODO
 
 ### Step 4: Make triangle plot
 
@@ -228,9 +225,8 @@ vcftools --vcf NW_022145594.1_homoq.vcf --TajimaD 10000 --out NW_022145594.1_nuc
 vcftools --vcf NW_022145594.1_homop.vcf --TajimaD 10000 --out NW_022145594.1_nuc_div_homop
 ```
 
-Nucleotide diversity data is available on Zenodo nuc_div_data directory TODO.
 For plotting nucleotide diversities: [nuc_div.ipynb](https://github.com/Cpetak/Urchin_inversions/blob/main/nuc_div.ipynb)
-**Figure 2, supplementary figure of nucleotide diversities and Figure 5 subplot with PI diversity and SNP count are all plotted here!**
+
 
 
 

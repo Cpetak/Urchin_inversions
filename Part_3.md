@@ -75,9 +75,7 @@ Run: `Rscript go_enrichment.R NW_022145594.1 12702886 13424367` (has to be the s
 
 Does GO enrichment for all three kinds of categories listed above for all three kids of GO (biological process, cellular component, molecular function) which are combined into one file. So 3 output files in total.
 
-**All resulting files can be found at: go_enrich_results on Zenodo TODO.**
-
-Code to make the Figure 5 go enrichment subfigure: [go_enrich_figure.R](https://github.com/Cpetak/Urchin_inversions/blob/main/go_enrich_figure.R)
+Code to make the GO enrichment subfigure: [go_enrich_figure.R](https://github.com/Cpetak/Urchin_inversions/blob/main/go_enrich_figure.R)
 
 Figure can be found in the intermediary_files directory.
 
@@ -155,8 +153,6 @@ cname=594
 repeat with cname=594_inv
 
 **Code above is gathered in get_afs.sh**
-
-**Resulting files can be found here: snpeff_results directory.** TODO add to zenodo
 
 **Outputs analysed and figures made in [snpeff.ipynb](https://github.com/Cpetak/Urchin_inversions/blob/main/snpeff.ipynb).**
 
@@ -252,5 +248,3 @@ sbatch --array=1-$( cat guide_file_${mychr}.txt | wc -l) run_geva.sh guide_file_
 To launch jobs one after another use the arraylauncher.py script.
 
 **Analysis and code for the figure can be found in [tmrca.ipynb](https://github.com/Cpetak/Urchin_inversions/blob/main/tmrca.ipynb).**
-
-**Output files can be found in the tmrca_results directory on Zenodo** TODO

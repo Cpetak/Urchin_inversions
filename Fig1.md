@@ -7,3 +7,5 @@ MDS figures and PCAs can be found in the intermediary_files directory.
 I put these together into one plot using Inkscape.
 
 For remaking the PCA and MDS plots, data can be read and plot can be plotted: [fig1_recreate.py](https://github.com/Cpetak/Urchin_inversions/blob/main/fig1_recreate.py)
+
+For the new version of Figure 1, implemented in R: [Fig1.R](https://github.com/Cpetak/Urchin_inversions/blob/main/Fig1.R)

@@ -189,8 +189,6 @@ To run for every snp length independently, a one-line:
 
 Then can rerun specific ones to adjust alpha.
 
-**Results of the local PCA analysis can be found here: TODO Zenodo link.**
-
 Note: Figures and code to make supp figure 1 with the "Genome-wide patterns of local PCA" can be found in the intermediary_files directory and in the global_local_PCA.ipynb.
 
 ## Finding putative breakpoints
@@ -313,13 +311,17 @@ and writes PC1 and PC2 to csv files.
 
 ### Step 4: Assign individuals to genotype groups, make plots, correlate with latitude
 
-Python file, [genotype_by_PCA.py](https://github.com/Cpetak/Urchin_inversions/blob/main/genotype_by_PCA.py)
+Python file, [genotype_by_PCA.py](https://github.com/Cpetak/Urchin_inversions/blob/main/genotype_by_PCA.py).
+Uses agglomerative clustering to assign individuals to three groups. 
 
 run:
 `python genotype_by_PCA.py NW_022145594.1_12702886_16793794_dim1.csv NW_022145594.1_12702886_16793794_dim2.csv 3 NW_022145594.1_12702886_16793794_perc_explained.csv`
-3 is number of clusters, output is 2 csv files with individual IDs
-(1-140) for each homozygote group and PCA, elbow, pie, line and map
-plots, and chi-square results to txt file.
+3 is number of clusters, output is 2 csv files with individual IDs (1-140) for each homozygote group.
+
+Also, the code is used to make the following figures:
+PCA plot, elbow plot, pie charts, line plots and maps.
+
+This code is also used to generate the chi-square results (to test for Hardy-Weinberg equilibrium) and to test for correlation with geographical latitude.
 
 OUT: AA, Aa or aa for each individual and PCA plot, with map
 
