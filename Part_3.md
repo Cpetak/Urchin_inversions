@@ -248,3 +248,9 @@ sbatch --array=1-$( cat guide_file_${mychr}.txt | wc -l) run_geva.sh guide_file_
 To launch jobs one after another use the arraylauncher.py script.
 
 **Analysis and code for the figure can be found in [tmrca.ipynb](https://github.com/Cpetak/Urchin_inversions/blob/main/tmrca.ipynb).**
+
+# BayPass, localscore and Fisher's exact test
+
+Code to run BayPass can be found here: [baypassshuffle.sh](https://github.com/Cpetak/Urchin_inversions/blob/main/baypassshuffle.sh).
+
+Using localscore and Fisher's exact test: [InversionBaypass.R](https://github.com/Cpetak/Urchin_inversions/blob/main/InversionBaypass.R).

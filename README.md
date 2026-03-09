@@ -31,6 +31,7 @@ Steps and code for:
 - GO enrichment
 - SnpEff - predicting SNP effect
 - Time to most recent common ancestor using GEVA
+- BayPass, localscore and Fisher's exact test
 
 can be found in [Part 3.](https://github.com/Cpetak/Urchin_inversions/blob/main/Part_3.md)
 
