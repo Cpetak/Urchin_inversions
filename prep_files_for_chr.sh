@@ -21,10 +21,11 @@ cd ${SLURM_SUBMIT_DIR}
 # Executable section: echoing some Slurm data
 echo "Starting sbatch script myscript.sh at:`date`"
 
-cd /users/c/p/cpetak/WGS/geva
+cd /users/c/p/cpetak/WGS/Urchin_inversions
 
 mychr=$1
-cp /users/c/p/cpetak/EG2023/structural_variation/filtered_bcf_files/${mychr}/${mychr}_filtered.vcf .
+#cp /users/c/p/cpetak/EG2023/structural_variation/filtered_bcf_files/${mychr}/${mychr}_filtered.vcf .
+cp /netfiles/pespenilab_share/urchin_bcfs/${mychr} .
 input_vcf=${mychr}_filtered.vcf
 
 bgzip $input_vcf

@@ -13,12 +13,20 @@ if (interactive()) {
 }
 
 #file <- paste("~/WGS/Urchin_inversions/ld_data", "/combined_", args[1], "_", args[2],args[3],".Rdata", sep = "")
-file <- paste("~/WGS/Urchin_inversions/ld_data", "/combined_", args[1], "_", args[2],".Rdata", sep = "")
+file <- paste("~/WGS/Urchin_inversions/combined_", args[1], "_", args[2],".Rdata", sep = "")
 print(file)
 #outfile <- paste(args[1], "_", args[2], "_LD_", args[3], ".pdf", sep="")
 outfile <- paste(args[1], "_", args[2], "_LD.pdf", sep="")
 
 load(file)
+#setorder(o, start1)
+#print(class(o))
+#print(dim(o))
+#print(attributes(o))
+#print(names(o))
+#print(head(rownames(o)))
+#print(colnames(o))
+#print(head(o))
 
 ### pad empty spaces
 grid <- data.table(expand.grid(1:max(c(o$win1, o$win2)), 1:max(c(o$win1, o$win2))))

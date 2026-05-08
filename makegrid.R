@@ -159,7 +159,7 @@ print(dim(wins.pair))
   o <- rbindlist(o)
 
 ### save
-  save(o, file=paste("~/WGS/local_pca_pipe/makegrid_",myChrom,"_",win.size,"/","temp_job", jobId, "_", win.size, "_", step.size, ".Rdata", sep=""))
+  save(o, file=paste("~/WGS/Urchin_inversions/makegrid_tempfiles/","temp_job", jobId, "_", win.size, "_", step.size, ".Rdata", sep=""))
 
 
   

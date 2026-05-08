@@ -22,9 +22,9 @@ cd ${SLURM_SUBMIT_DIR}
 # Executable section: echoing some Slurm data
 echo "Starting sbatch script myscript.sh at:`date`"
 
-cd /users/c/p/cpetak/WGS/local_pca_pipe
+cd /users/c/p/cpetak/WGS/Urchin_inversions
 
-chr_name="${1::-13}"
+#chr_name="${1::-13}"
 
 #mkdir "/users/c/p/cpetak/WGS/local_pca_pipe/makegrid_${chr_name}_${2}"
 
