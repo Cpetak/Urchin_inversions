@@ -159,7 +159,10 @@ print(dim(wins.pair))
   o <- rbindlist(o)
 
 ### save
-  save(o, file=paste("~/WGS/Urchin_inversions/makegrid_tempfiles/","temp_job", jobId, "_", win.size, "_", step.size, ".Rdata", sep=""))
+  group_type = sub(".*_([^_]+)\\.gds$", "\\1", myFileName)
+  makegrid_foldername = paste("makegrid_tempfiles_", myChrom, "_", group_type, "_", myWindowSize, sep="")
+  save(o, file=paste("~/WGS/Urchin_inversions/", makegrid_foldername,"/","temp_job", jobId, "_", win.size, "_", step.size, ".Rdata", sep=""))
+  # save(o, file=paste("~/WGS/Urchin_inversions/makegrid_tempfiles/","temp_job", jobId, "_", win.size, "_", step.size, ".Rdata", sep=""))
 
 
   

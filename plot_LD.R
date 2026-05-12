@@ -13,10 +13,10 @@ if (interactive()) {
 }
 
 #file <- paste("~/WGS/Urchin_inversions/ld_data", "/combined_", args[1], "_", args[2],args[3],".Rdata", sep = "")
-file <- paste("~/WGS/Urchin_inversions/combined_", args[1], "_", args[2],".Rdata", sep = "")
+file <- paste("~/WGS/Urchin_inversions/combined_", args[1], "_", args[2], "_", args[3], ".Rdata", sep = "")
 print(file)
 #outfile <- paste(args[1], "_", args[2], "_LD_", args[3], ".pdf", sep="")
-outfile <- paste(args[1], "_", args[2], "_LD.pdf", sep="")
+outfile <- paste(args[1], "_", args[2], "_", args[3], "_LD.pdf", sep="")
 
 load(file)
 #setorder(o, start1)

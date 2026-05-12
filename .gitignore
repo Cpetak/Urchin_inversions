@@ -11,3 +11,5 @@ intermediary_files
 ld_homos_only
 vcf_col_ids
 phased_vcfs_new
+makegrid_tempfiles_*
+*.Rdata

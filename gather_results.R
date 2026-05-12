@@ -6,11 +6,14 @@ library(stringr)
 
 args <- commandArgs(trailingOnly=TRUE)
 
-root_folder <- "~/WGS/Urchin_inversions/makegrid_tempfiles"
+makegrid_foldername = paste("makegrid_tempfiles_", args[1], "_", args[2], "_", args[3], sep="")
+root_folder <- "~/WGS/Urchin_inversions/"
+myfolder = paste(root_folder, makegrid_foldername, sep="")
 
-files_r <- system(paste("ls -v",root_folder, sep = " "), inter = T)
+files_r <- system(paste("ls -v",myfolder, sep = " "), inter = T)
 
 #Checking missing files
+#if (TRUE) {
 c<-1
 for (f in files_r){
   first<-strsplit(f, split = "job")[[1]][2]
@@ -22,6 +25,7 @@ for (f in files_r){
   c<-c+1
 }
 
+
 winsize <- strsplit(files_r[1], split = "_")[[1]][2]
 stepsize <- strsplit(files_r[1], split = "_")[[1]][3]
 stepsize <- strsplit(stepsize, split = "[.]")[[1]][1]
@@ -30,9 +34,10 @@ stepsize <- strsplit(stepsize, split = "[.]")[[1]][1]
 o <- foreach(i=files_r, .combine = "rbind")%do%{
   
   message(i)
-  tmp <- get(load(paste(root_folder,i, sep = "/")))
+  tmp <- get(load(paste(myfolder,i, sep = "/")))
   return(tmp)
   
 }
 setDT(o)
-save(o, file=paste("~/WGS/Urchin_inversions/combined_", args[1], "_", args[2], ".Rdata", sep = ""))
+save(o, file=paste("~/WGS/Urchin_inversions/combined_", args[1], "_", args[2], "_", args[3],  ".Rdata", sep = ""))
+#save(o, file=paste("~/WGS/Urchin_inversions/combined_", args[1], "_", args[2], ".Rdata", sep = ""))
