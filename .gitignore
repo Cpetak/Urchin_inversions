@@ -13,3 +13,4 @@ vcf_col_ids
 phased_vcfs_new
 makegrid_tempfiles_*
 *.Rdata
+ld_plots
